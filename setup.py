@@ -30,6 +30,7 @@ crcmod_ext = Extension('crc32c',
                        include_dirs=['.'])
 
 classifiers = [
+    # There's no more specific classifier for LGPLv2.1+
     "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
     "Operating System :: OS Independent",
     "Programming Language :: C",
@@ -45,8 +46,8 @@ setup(name='crc32c',
       author='The ICRAR DIA Team',
       url='https://github.com/ICRAR/crc32c',
       author_email='rtobar@icrar.org',
-      version='1.0',
-      license="LGPLv2+",
+      version='1.1',
+      license="LGPLv2.1+",
       description='A python package exposing the Intel SSE4.2 CRC32C instruction',
       classifiers=classifiers,
       ext_modules=[crcmod_ext])
