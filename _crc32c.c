@@ -116,7 +116,9 @@ PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 		return NULL;
 
 	bin_data = pbin.buf;
+	crc ^= 0xffffffff;
 	uint32_t result = _crc32c_intel(crc, bin_data, pbin.len);
+	result ^= 0xffffffff;
 
 	PyBuffer_Release(&pbin);
 	return PyInt_FromLong(result);
