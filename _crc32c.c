@@ -31,6 +31,7 @@
 #include <stdint.h>
 
 #include "checksse42.h"
+#include "common.h"
 #include "consume.h"
 #include "crc32c.h"
 
@@ -39,6 +40,7 @@
 	#define PyInt_FromLong PyLong_FromLong
 #endif
 
+#ifndef _IS_WINDOWS
 static
 PyObject* crc32c_consume(PyObject *self, PyObject *args) {
 
@@ -96,6 +98,7 @@ PyObject* crc32c_consume(PyObject *self, PyObject *args) {
 	PyTuple_SetItem(res, 2, PyInt_FromLong(write_time));
 	return res;
 }
+#endif // _IS_WINDOWS
 
 static
 PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
@@ -127,7 +130,9 @@ PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 
 static PyMethodDef CRC32CMethods[] = {
 	{"crc32",   crc32c_crc32,   METH_VARARGS, "Calculate crc32c using Intel SSE4.2 instruction."},
+#ifndef _IS_WINDOWS
 	{"consume", crc32c_consume, METH_VARARGS, "read/crc/write loop using Intel SSE4.2 instruction"},
+#endif // _IS_WINDOWS
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
 

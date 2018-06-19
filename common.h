@@ -1,5 +1,5 @@
 /*
- *  Definition of a simple read+CRC+write loop using crc32c
+ *  Common macro definitions
  *
  *  ICRAR - International Centre for Radio Astronomy Research
  *  (c) UWA - The University of Western Australia, 2014
@@ -23,18 +23,8 @@
  *
  */
 
-#ifndef _CRC32C_CONSUME_H_
-#define _CRC32C_CONSUME_H_
-
-#include "common.h"
-
-#ifndef _IS_WINDOWS
-int _crc32c_read_crc_write(int fd_in, int fd_out,
-                           float in_timeout,
-                           size_t buffsize, uint64_t total,
-                           int crc_type, uint32_t* crc,
-                           unsigned long *crc_time,
-                           unsigned long *write_time);
-#endif // _IS_WINDOWS
-
+#if defined(WIN32) || defined(_WIN32) || defined(_MSC_VER) || defined(__MINGW32__)
+#define _IS_WINDOWS
+#else
+#undef _IS_WINDOWS
 #endif

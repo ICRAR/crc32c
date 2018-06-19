@@ -34,6 +34,7 @@
 
 #include "crc32c.h"
 
+#ifndef _IS_WINDOWS
 int _crc32c_read_crc_write(int fd_in, int fd_out,
                            float in_timeout,
                            size_t buffsize, uint64_t total,
@@ -107,3 +108,4 @@ int _crc32c_read_crc_write(int fd_in, int fd_out,
 	free(tmp_buff);
 	return stat;
 }
+#endif // _IS_WINDOWS
