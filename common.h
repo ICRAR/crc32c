@@ -23,8 +23,13 @@
  *
  */
 
+#ifndef _COMMON_H_
+#define _COMMON_H_
+
 #if defined(WIN32) || defined(_WIN32) || defined(_MSC_VER) || defined(__MINGW32__)
 #define _IS_WINDOWS
 #else
 #undef _IS_WINDOWS
 #endif
+
+#endif // _COMMON_H_
