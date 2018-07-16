@@ -23,6 +23,16 @@
  *
  */
 
+#if defined(_MSC_VER)
+#include <intrin.h>
+
+int _crc32c_intel_probe(void)
+{
+	int info[4];
+	__cpuid(info, 1);
+	return (info[2] & (1 << 20)) != 0;
+}
+#else
 int _crc32c_intel_probe(void) {
 
 	unsigned int ecx;
@@ -35,5 +45,5 @@ int _crc32c_intel_probe(void) {
 		: "eax", "ebx", "ecx", "edx"); // clobber
 
 	return (ecx & (1 << 20)) != 0;
-
 }
+#endif // defined(_MSC_VER)
