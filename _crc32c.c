@@ -28,7 +28,6 @@
  */
 
 #include <Python.h>
-#include <stdint.h>
 
 #include "checksse42.h"
 #include "common.h"
@@ -44,7 +43,7 @@ static
 PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 	Py_buffer pbin;
 	unsigned char *bin_data = NULL;
-	uint32_t crc = 0U;      /* initial value of CRC for getting input */
+	uint32_t crc = 0U, result;
 
 	/* In python 3 we accept only bytes-like objects */
 	const char *format =
@@ -60,7 +59,7 @@ PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 
 	bin_data = pbin.buf;
 	crc ^= 0xffffffff;
-	uint32_t result = _crc32c_intel(crc, bin_data, pbin.len);
+	result = _crc32c_intel(crc, bin_data, pbin.len);
 	result ^= 0xffffffff;
 
 	PyBuffer_Release(&pbin);
@@ -89,12 +88,12 @@ static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "crc32c", "wrapper
 
 MOD_INIT(crc32c)
 {
+	PyObject *m;
 	if( !_crc32c_intel_probe() ) {
 		PyErr_SetString(PyExc_ImportError, "crc32c is not available in your processor");
 		return MOD_VAL(NULL);
 	}
 
-	PyObject *m;
 	MOD_DEF(m, "crc32c", "wrapper for crc32c Intel instruction", CRC32CMethods);
 	if (m == NULL) {
 		return MOD_VAL(NULL);

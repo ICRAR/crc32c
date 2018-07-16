@@ -25,7 +25,7 @@
  *
  */
 
-#include <stdint.h>
+#include "common.h"
 
 #ifdef __WORDSIZE
 #define BITS_PER_LONG	__WORDSIZE
