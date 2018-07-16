@@ -5,3 +5,4 @@ dist
 .project
 .pydevproject
 .settings
+*.pyc
