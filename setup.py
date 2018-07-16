@@ -26,7 +26,7 @@ from setuptools import setup, Extension
 crcmod_ext = Extension('crc32c',
                        depends=glob.glob('*.h'),
                        language='c',
-                       sources=['_crc32c.c', 'crc32c.c', 'checksse42.c', 'consume.c'],
+                       sources=['_crc32c.c', 'crc32c.c', 'checksse42.c'],
                        include_dirs=['.'])
 
 classifiers = [
