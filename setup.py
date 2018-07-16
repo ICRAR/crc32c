@@ -50,4 +50,5 @@ setup(name='crc32c',
       license="LGPLv2.1+",
       description='A python package exposing the Intel SSE4.2 CRC32C instruction',
       classifiers=classifiers,
-      ext_modules=[crcmod_ext])
+      ext_modules=[crcmod_ext],
+      test_suite="test")
