@@ -1,0 +1,16 @@
+# let's go!
+language: python
+python:
+ - "2.7"
+ - "3.2"
+ - "3.3"
+ - "3.4"
+ - "3.5"
+ - "3.6"
+
+# Run the build and make sure we can at least import pyprofit correctly
+install:
+ - pip install .
+
+script:
+ - py.test || pytest

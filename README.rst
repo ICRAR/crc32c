@@ -1,6 +1,11 @@
 crc32c
 ======
 
+.. image:: https://travis-ci.org/ICRAR/crc32c.svg?branch=master
+    :target: https://travis-ci.org/ICRAR/crc32c
+.. image:: https://ci.appveyor.com/api/projects/status/lamys36iude1x180/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/rtobar/crc32c/branch/master
+
 This package exposes to Python the CRC32C algorithm implemented in the SSE 4.2
 instruction set of Intel CPUs.
 
