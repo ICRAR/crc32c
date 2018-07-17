@@ -15,8 +15,8 @@ Because ``crc32c`` is in PyPI, you can install it with::
 
  pip install crc32c
 
-Supported platforms are Linux and OSX using the gcc and clang compilers.
-Compilation using the Visual Studio compiler fails, but other compilers in
+Supported platforms are Linux and OSX using the gcc and clang compilers,
+and Windows using the Visual Studio compiler. Other compilers in
 Windows (MinGW for instance) might work.
 
 If your CPU doesn't support this instruction, the package will fail to load
