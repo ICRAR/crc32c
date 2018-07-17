@@ -33,12 +33,6 @@
 #include "common.h"
 #include "crc32c.h"
 
-/* Python 3 doesn't have PyInt anymore */
-#if PY_MAJOR_VERSION >= 3
-	#define PyInt_FromLong PyLong_FromLong
-#endif
-
-
 static
 PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 	Py_buffer pbin;
@@ -63,7 +57,7 @@ PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 	result ^= 0xffffffff;
 
 	PyBuffer_Release(&pbin);
-	return PyInt_FromLong(result);
+	return PyLong_FromUnsignedLong(result);
 }
 
 
