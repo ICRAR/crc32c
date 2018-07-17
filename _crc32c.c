@@ -33,6 +33,9 @@
 #include "common.h"
 #include "crc32c.h"
 
+/* Set at module loading time */
+static crc_function crc_fn;
+
 static
 PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 	Py_buffer pbin;
@@ -53,7 +56,7 @@ PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 
 	bin_data = pbin.buf;
 	crc ^= 0xffffffff;
-	result = _crc32c_intel(crc, bin_data, pbin.len);
+	result = crc_fn(crc, bin_data, pbin.len);
 	result ^= 0xffffffff;
 
 	PyBuffer_Release(&pbin);
@@ -83,8 +86,20 @@ static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "crc32c", "wrapper
 MOD_INIT(crc32c)
 {
 	PyObject *m;
-	if( !_crc32c_intel_probe() ) {
-		PyErr_SetString(PyExc_ImportError, "crc32c is not available in your processor");
+
+	char *sw_mode = getenv("CRC32C_SW_MODE");
+
+	if (sw_mode != NULL && !strncmp(sw_mode, "1", 1)) {
+		crc_fn = _crc32c_sw_slicing_by_8;
+	}
+	else if (_crc32c_intel_probe()) {
+		crc_fn = _crc32c_intel;
+	}
+	else {
+		PyErr_SetString(PyExc_ImportError, "\n"
+		    "SSE4.2 extensions providing a crc32c hardware instruction are not\n"
+		    "available in your processor. You can set the CRC32C_SW_MODE variable\n"
+		    "to '1' to use a software implementation instead.\n");
 		return MOD_VAL(NULL);
 	}
 

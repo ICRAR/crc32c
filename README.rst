@@ -21,3 +21,6 @@ Windows (MinGW for instance) might work.
 
 If your CPU doesn't support this instruction, the package will fail to load
 with an ``ImportError``.
+This can be overcome by setting the ``CRC32C_SW_MODE`` environment variable
+to the value ``1`` before importing the module,
+in which case a software implementation is offered.

@@ -40,3 +40,5 @@ install:
 
 script:
  - py.test || pytest
+ - export CRC32C_SW_MODE=1
+ - py.test || pytest
