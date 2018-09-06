@@ -1,14 +1,26 @@
 # let's go!
 language: python
-python:
- - "2.7"
- - "3.2"
- - "3.3"
- - "3.4"
- - "3.5"
- - "3.6"
 
-# Run the build and make sure we can at least import pyprofit correctly
+# Build and test in several python versions
+# Also, if this is a tag commit then upload binary wheels to PyPI
+matrix:
+  include:
+    - python: "2.7"
+    - python: "3.2"
+    - python: "3.3"
+    - python: "3.4"
+    - python: "3.5"
+    - python: "3.6"
+    - services: docker
+      env:
+        - DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+        - secure: WhTNcKI0e9HI6qpkIA9nIfFt0D6umrfKcsQIa04QTyTYsxbk4qada4CoAMpocYJ/UMf4CSJ9VFVO6tboch7WwVhibDTsNAglkcUj/oKNcZAI4j8Sh60LimoqaKKYP09vaVcWrBepOud7sVNplrqwR510u7QDIpsI0FfUGSTMu2ykUhH+9lNG0ywx62+30sRCjXJ+rLBtD3PwhzaGg1JskTDGctUuP/YqOIBh/heAuyWxhmb+Qns4w3t8TlDtSJxunf7DBho84TcL6nqDE2jqVVaEr2+e/QU+yxotYfdbRqHaESTVXnvUNVVdAsaI7pGU+gR5/Cak2k0Q1RBt/R0GNbm7WrMjdxdCUYl0TXsXUgcF167t4a0C3Q+O9Sm9iNA9dODKOJkICueLsZI75E/082Eqnkkj+y825fmqSQrK6PfI1c+oD+UMjNUoyI+yFJNUepCHL7bRYaS5K6u4WLJd5au2/TQIIOF25Jg+lDjW3Ex9TCtb2ynSgwJowQRRIft2qi69E1XuB2QT6pFho/RXEXT3sXRUxMhSu0O7eLNncICSlgXedLHXtHrA/blkWLbD1QwS5SX+m+n7GIvD0RpEyLqzfqkzvO0FVv6WDvzosU6T1BS3FI8Sz48G3M7apQNWh57zFqfQL3nqR7Vg1Y6kwajx+v4nFW0UksJ1kSjtZW0=
+      install:
+        - if [ -n "$TRAVIS_TAG" ]; then docker pull $DOCKER_IMAGE; fi
+      script:
+        - if [ -n "$TRAVIS_TAG" ]; then docker run --rm -v `pwd`:/io $DOCKER_IMAGE /bin/bash -c 'for PY in /opt/python/*/bin; do ${PY}/pip wheel /io/ -w wheelhouse/; done; for w in wheelhouse/*.whl; do auditwheel repair $w -w /io/wheelhouse; done'; fi
+        - if [ -n "$TRAVIS_TAG" ]; then pip install twine; twine upload -u rtobar -p "$PYPI_PWD" wheelhouse/*.whl; fi
+
 install:
  - pip install .
 
