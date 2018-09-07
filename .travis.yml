@@ -30,7 +30,7 @@ matrix:
         - if [ -n "$TRAVIS_TAG" ]; then pip install twine; twine upload -u rtobar -p "$PYPI_PWD" wheelhouse/*.whl; fi
 
 before_install:
-- if [[ $TRAVIS_OS_NAME == osx ]] && [[ $PYTHON_VERSION == 3 ]]; then brew upgrade python; pip3 install --ignore-installed virtualenv; fi
+- if [[ $TRAVIS_OS_NAME == osx ]] && [[ $PYTHON_VERSION == 3 ]]; then brew upgrade python; pip$PYTHON_VERSION install --ignore-installed virtualenv; fi
 - virtualenv --python=python$PYTHON_VERSION env
 - source env/bin/activate
 - pip install pytest
