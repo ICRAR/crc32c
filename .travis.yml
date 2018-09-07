@@ -11,6 +11,14 @@ matrix:
     - python: "3.4"
     - python: "3.5"
     - python: "3.6"
+    - language: generic
+      python: 2.7
+      env: PYTHON_VERSION=2
+      os: osx
+    - language: generic
+      python: 3.6
+      env: PYTHON_VERSION=3
+      os: osx
     - services: docker
       env:
         - DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
