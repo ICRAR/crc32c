@@ -32,8 +32,7 @@ matrix:
 before_install:
 - if [[ $TRAVIS_OS_NAME == osx ]] && [[ $PYTHON_VERSION == 3 ]]; then brew upgrade python; fi
 - pip$PYTHON_VERSION install --ignore-installed virtualenv
-- virtualenv --python=python$PYTHON_VERSION env
-- source env/bin/activate
+- if [[ $TRAVIS_OS_NAME == osx ]]; then virtualenv --python=python$PYTHON_VERSION env; source env/bin/activate; fi
 - pip install pytest
 
 install:
