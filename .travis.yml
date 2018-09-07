@@ -11,6 +11,14 @@ matrix:
     - python: "3.4"
     - python: "3.5"
     - python: "3.6"
+    - language: generic
+      python: 2.7
+      env: PYTHON_VERSION=2
+      os: osx
+    - language: generic
+      python: 3.6
+      env: PYTHON_VERSION=3
+      os: osx
     - services: docker
       env:
         - DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
@@ -20,6 +28,12 @@ matrix:
       script:
         - if [ -n "$TRAVIS_TAG" ]; then docker run --rm -v `pwd`:/io $DOCKER_IMAGE /bin/bash -c 'for PY in /opt/python/*/bin; do ${PY}/pip wheel /io/ -w wheelhouse/; done; for w in wheelhouse/*.whl; do auditwheel repair $w -w /io/wheelhouse; done'; fi
         - if [ -n "$TRAVIS_TAG" ]; then pip install twine; twine upload -u rtobar -p "$PYPI_PWD" wheelhouse/*.whl; fi
+
+before_install:
+- if [[ $TRAVIS_OS_NAME == osx ]] && [[ $PYTHON_VERSION == 3 ]]; then brew upgrade python; fi
+- pip$PYTHON_VERSION install --ignore-installed virtualenv
+- if [[ $TRAVIS_OS_NAME == osx ]]; then virtualenv --python=python$PYTHON_VERSION env; source env/bin/activate; fi
+- pip install pytest
 
 install:
  - pip install .
