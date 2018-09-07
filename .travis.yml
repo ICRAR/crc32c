@@ -29,6 +29,9 @@ matrix:
         - if [ -n "$TRAVIS_TAG" ]; then docker run --rm -v `pwd`:/io $DOCKER_IMAGE /bin/bash -c 'for PY in /opt/python/*/bin; do ${PY}/pip wheel /io/ -w wheelhouse/; done; for w in wheelhouse/*.whl; do auditwheel repair $w -w /io/wheelhouse; done'; fi
         - if [ -n "$TRAVIS_TAG" ]; then pip install twine; twine upload -u rtobar -p "$PYPI_PWD" wheelhouse/*.whl; fi
 
+before_install:
+ - pip install pytest
+
 install:
  - pip install .
 
