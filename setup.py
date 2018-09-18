@@ -42,6 +42,9 @@ classifiers = [
     "Programming Language :: Python :: 3.6",
 ]
 
+with open('README.rst', 'rt') as f:
+    long_description = f.read()
+
 setup(name='crc32c',
       author='The ICRAR DIA Team',
       url='https://github.com/ICRAR/crc32c',
@@ -49,6 +52,8 @@ setup(name='crc32c',
       version='1.4',
       license="LGPLv2.1+",
       description='A python package exposing the Intel SSE4.2 CRC32C instruction',
+      long_description=long_description,
+      long_description_content_type='text/x-rst',
       classifiers=classifiers,
       ext_modules=[crcmod_ext],
       test_suite="test")
