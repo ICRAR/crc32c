@@ -20,7 +20,10 @@
 #    MA 02111-1307  USA
 #
 import glob
+
+import distutils.ccompiler
 from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext
 
 
 crcmod_ext = Extension('crc32c',
@@ -28,6 +31,22 @@ crcmod_ext = Extension('crc32c',
                        language='c',
                        sources=['_crc32c.c', 'crc32c_adler.c', 'crc32c_sw.c', 'checksse42.c'],
                        include_dirs=['.'])
+
+def get_extra_compile_args():
+    # msvc is treated specially; otherwise we assume it's a unix compiler
+    comp = distutils.ccompiler.get_default_compiler()
+    if comp == 'msvc':
+        return ['/O2', '/DNDEBUG']
+    else:
+        return ['-O3', '-msse4.2', '-mpclmul', '-DNDEBUG']
+
+class _build_ext(build_ext):
+    """Custom build_ext command that includes extra compilation arguments"""
+    def run(self):
+        assert(len(self.distribution.ext_modules) == 1)
+        self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args()
+        build_ext.run(self)
+
 
 classifiers = [
     # There's no more specific classifier for LGPLv2.1+
@@ -56,4 +75,5 @@ setup(name='crc32c',
       long_description_content_type='text/x-rst',
       classifiers=classifiers,
       ext_modules=[crcmod_ext],
+      cmdclass = {'build_ext': _build_ext},
       test_suite="test")
