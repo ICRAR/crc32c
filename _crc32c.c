@@ -93,7 +93,8 @@ MOD_INIT(crc32c)
 		crc_fn = _crc32c_sw_slicing_by_8;
 	}
 	else if (_crc32c_intel_probe()) {
-		crc_fn = _crc32c_intel;
+		crc_fn = _crc32c_hw_adler;
+		crc32c_init_hw_adler();
 	}
 	else {
 		PyErr_SetString(PyExc_ImportError, "\n"
