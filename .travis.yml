@@ -40,5 +40,7 @@ install:
 
 script:
  - py.test || pytest
+ - python -c "import crc32c; import time; x = b' ' * int(1e9); n = 10; s = time.time(); [crc32c.crc32(x) for _ in range(n)]; print('Ran at %.3f [GB/s]' % (n/(time.time() - s),))"
  - export CRC32C_SW_MODE=1
  - py.test || pytest
+ - python -c "import crc32c; import time; x = b' ' * int(1e9); n = 10; s = time.time(); [crc32c.crc32(x) for _ in range(n)]; print('Ran at %.3f [GB/s]' % (n/(time.time() - s),))"

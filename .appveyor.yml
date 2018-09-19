@@ -46,8 +46,14 @@ install:
 
 build: off
 
+# Build, then run tests/benchmark with hw/sw implementations
 test_script:
-  - ".build.cmd %PYTHON%\\python.exe setup.py test"
+  - ".build.cmd %PYTHON%\\python.exe setup.py develop"
+  - "%PYTHON%\\python.exe setup.py test"
+  - "%PYTHON%\\python.exe -c \"import crc32c; import time; x = b' ' * int(1e9); n = 10; s = time.time(); [crc32c.crc32(x) for _ in range(n)]; print('Ran at {0} [GB/s]'.format(n/(time.time() - s)))\""
+  - "set CRC32C_SW_MODE=1"
+  - "%PYTHON%\\python.exe setup.py test"
+  - "%PYTHON%\\python.exe -c \"import crc32c; import time; x = b' ' * int(1e9); n = 10; s = time.time(); [crc32c.crc32(x) for _ in range(n)]; print('Ran at {0} [GB/s]'.format(n/(time.time() - s)))\""
 
 after_test:
   - ".build.cmd %PYTHON%\\python.exe setup.py bdist_wheel"
