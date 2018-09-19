@@ -28,7 +28,6 @@
 
 #include "common.h"
 
-uint32_t _crc32c_intel(uint32_t crc, const unsigned char *data, unsigned long length);
 void crc32c_init_hw_adler(void);
 uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char* data, unsigned long length);
 uint32_t _crc32c_sw_slicing_by_8(uint32_t crc, const unsigned char *data, unsigned long length);
