@@ -24,3 +24,33 @@ with an ``ImportError``.
 This can be overcome by setting the ``CRC32C_SW_MODE`` environment variable
 to the value ``1`` before importing the module,
 in which case a software implementation is offered.
+
+Both the hardware- and software-based algorithms
+are based on `Mark Adler's code <http://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775>`_,
+with some modifications required
+to make the code more portable
+and fit for inclusion within this python package.
+
+Copyright
+---------
+
+This package is copyrighted::
+
+ ICRAR - International Centre for Radio Astronomy Research
+ (c) UWA - The University of Western Australia, 2017
+ Copyright by UWA (in the framework of the ICRAR)
+
+The original crc32c algorithms,
+both software and hardware,
+are copyrighted by::
+
+ Copyright (C) 2013 Mark Adler
+
+License
+-------
+
+This package is licensed under the LGPL-2.1 license.
+
+The original crc32c algorithm's code,
+both software and hardware,
+are licensed under the BSD 3-clause license.
