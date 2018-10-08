@@ -69,6 +69,16 @@ static PyMethodDef CRC32CMethods[] = {
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
+static const char *import_error_msg = "\n\n"
+"SSE4.2 extensions providing a crc32c hardware instruction are not available in\n"
+"your processor. If you still need to use the crc32c checksum algorithm this\n"
+"package comes with a software implementation that can be loaded instead. For\n"
+"that set the CRC32C_SW_MODE environment variable before loading the package to\n"
+"one of the following values:\n\n"
+" * 'auto' to use software implementation if no CPU hardware support is found.\n"
+" * 'force' to use software implementation regardless of CPU hardware support.\n"
+" * '1' means 'force', but will be eventually discontinued.\n";
+
 /* Support for Python 2/3 */
 #if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "crc32c", "wrapper for crc32c Intel instruction", -1, CRC32CMethods};
@@ -88,19 +98,24 @@ MOD_INIT(crc32c)
 	PyObject *m;
 
 	char *sw_mode = getenv("CRC32C_SW_MODE");
+	int has_hw_impl = _crc32c_intel_probe();
+	int force_sw_impl = sw_mode != NULL && (!strcmp(sw_mode, "1") || !strcmp(sw_mode, "force"));
+	int fallback_to_sw_impl = sw_mode != NULL && !strcmp(sw_mode, "auto");
 
-	if (sw_mode != NULL && !strncmp(sw_mode, "1", 1)) {
+	crc_fn = NULL;
+	if (force_sw_impl) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 	}
-	else if (_crc32c_intel_probe()) {
+	else if (has_hw_impl) {
 		crc_fn = _crc32c_hw_adler;
 		crc32c_init_hw_adler();
 	}
+	else if (fallback_to_sw_impl) {
+		crc_fn = _crc32c_sw_slicing_by_8;
+	}
+
 	else {
-		PyErr_SetString(PyExc_ImportError, "\n"
-		    "SSE4.2 extensions providing a crc32c hardware instruction are not\n"
-		    "available in your processor. You can set the CRC32C_SW_MODE variable\n"
-		    "to '1' to use a software implementation instead.\n");
+		PyErr_SetString(PyExc_ImportError, import_error_msg);
 		return MOD_VAL(NULL);
 	}
 

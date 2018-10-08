@@ -8,7 +8,7 @@ crc32c
 .. image:: https://badge.fury.io/py/crc32c.svg
     :target: https://badge.fury.io/py/crc32c
 
-This package exposes to Python the CRC32C algorithm implemented in the SSE 4.2
+This package exposes to Python the crc32c algorithm implemented in the SSE 4.2
 instruction set of Intel CPUs.
 
 Because ``crc32c`` is in PyPI, you can install it with::
@@ -19,11 +19,21 @@ Supported platforms are Linux and OSX using the gcc and clang compilers,
 and Windows using the Visual Studio compiler. Other compilers in
 Windows (MinGW for instance) might work.
 
-If your CPU doesn't support this instruction, the package will fail to load
+Implementation details
+----------------------
+
+By default,
+if your CPU doesn't support this instruction, the package will fail to load
 with an ``ImportError``.
-This can be overcome by setting the ``CRC32C_SW_MODE`` environment variable
-to the value ``1`` before importing the module,
-in which case a software implementation is offered.
+If you still need to use the crc32c checksum algorithm
+this package comes with a software implementation
+that can be loaded instead.
+For that set the ``CRC32C_SW_MODE`` environment variable
+to one of the following values:
+
+* ``auto``: use software implementation if no CPU hardware support is found.
+* ``force``: use software implementation regardless of CPU hardware support.
+* ``1``: like ``force``, but will eventually be discontinued.
 
 Both the hardware- and software-based algorithms
 are based on `Mark Adler's code <http://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775>`_,
