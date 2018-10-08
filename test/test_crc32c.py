@@ -47,18 +47,7 @@ else:
             yield bytes([b])
 
 @unittest.skipIf(crc32 is None, 'no crc32c support in this platform')
-class TestCrc32c(unittest.TestCase):
-
-    check = 0xe3069283
-
-    def test_all(self):
-        self.assertEqual(self.check, crc32(b'123456789'))
-
-    def test_piece_by_piece(self):
-        c = crc32(b'1')
-        for x in as_individual_bytes(b'23456789'):
-            c = crc32(x, c)
-        self.assertEqual(self.check, c)
+class TestMisc(unittest.TestCase):
 
     def test_zero(self):
         self.assertEqual(0, crc32(b''))
@@ -73,3 +62,31 @@ class TestCrc32c(unittest.TestCase):
         assert_msvc_vals(ushort_as_bytes(1000), 1, 3870914500)
         assert_msvc_vals(uint_as_bytes(50000), 1, 971731851)
         assert_msvc_vals(ulonglong_as_bytes(0x88889999EEEE3333), 0x5555AAAA, 0x16F57621)
+
+
+numbers1 = ('Numbers1', b'123456789', 0xe3069283)
+numbers2 = ('Numbers2', b'23456789', 0xBFE92A83)
+numbers3 = ('Numbers3', b'1234567890', 0xf3dbd4fe)
+phrase = ('Phrase', b'The quick brown fox jumps over the lazy dog', 0x22620404)
+long_phrase = ('LongPhrase', (b"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc omni virtuti vitium contrario nomine opponitur. "
+b"Conferam tecum, quam cuique verso rem subicias; Te ipsum, dignissimum maioribus tuis, voluptasne induxit, ut adolescentulus eriperes "
+b"P. Conclusum est enim contra Cyrenaicos satis acute, nihil ad Epicurum. Duo Reges: constructio interrete. Tum Torquatus: Prorsus, inquit, assentior;\n"
+b"Quando enim Socrates, qui parens philosophiae iure dici potest, quicquam tale fecit? Sed quid sentiat, non videtis. Haec quo modo conveniant, non "
+b"sane intellego. Sed ille, ut dixi, vitiose. Dic in quovis conventu te omnia facere, ne doleas. Quod si ita se habeat, non possit beatam praestare "
+b"vitam sapientia. Quis suae urbis conservatorem Codrum, quis Erechthei filias non maxime laudat? Primum divisit ineleganter; Huic mori optimum esse "
+b"propter desperationem sapientiae, illi propter spem vivere."), 0xfcb7575a)
+
+class Crc32cChecks(object):
+    def test_all(self):
+        self.assertEqual(self.checksum, crc32(self.val))
+    def test_piece_by_piece(self):
+        c = 0
+        for x in as_individual_bytes(self.val):
+            c = crc32(x, c)
+        self.assertEqual(self.checksum, c)
+
+# Generate the actual unittest classes for each of the testing values
+if crc32 is not None:
+    for name, val, checksum in (numbers1, numbers2, numbers3, phrase, long_phrase):
+        classname = 'Test%s' % name
+        locals()[classname] = type(classname, (unittest.TestCase, Crc32cChecks), {'val': val, 'checksum': checksum})
