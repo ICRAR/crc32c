@@ -47,16 +47,16 @@
 #include "common.h"
 
 /*
- * MSVC doesn't have __builtin_ia32_crc32_* functions. Instead it has
+ * MSVC/icc don't have __builtin_ia32_crc32_* functions. Instead they have
  * the _mm_crc32_* intrinsics, which accomplish the same at the end of the day
  */
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__ICC)
 # include <nmmintrin.h>
 # define __builtin_ia32_crc32qi _mm_crc32_u8
 # define __builtin_ia32_crc32hi _mm_crc32_u16
 # define __builtin_ia32_crc32si _mm_crc32_u32
 # define __builtin_ia32_crc32di _mm_crc32_u64
-#endif /* _MSC_VER */
+#endif /* defined(_MSC_VER) || defined(__ICC) */
 
 /* CRC-32C (iSCSI) polynomial in reversed bit order. */
 #define POLY 0x82f63b78
