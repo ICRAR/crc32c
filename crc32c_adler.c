@@ -252,8 +252,8 @@ uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, unsigned long 
                         CRCtriplet ( crc, next, LONG, 24 );
                         next += 32;
                 } while ( next < end );
-                crc0 = crc32c_shift ( crc32c_long, crc0 ) ^ crc1;
-                crc0 = crc32c_shift ( crc32c_long, crc0 ) ^ crc2;
+                crc0 = crc32c_shift ( crc32c_long, (uint32_t)crc0 ) ^ crc1;
+                crc0 = crc32c_shift ( crc32c_long, (uint32_t)crc0 ) ^ crc2;
                 next += LONG*2;
                 len -= LONG*3;
         }
@@ -271,8 +271,8 @@ uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, unsigned long 
                         CRCtriplet ( crc, next, SHORT, 24 );
                         next += 32;
                 } while ( next < end );
-                crc0 = crc32c_shift ( crc32c_short, crc0 ) ^ crc1;
-                crc0 = crc32c_shift ( crc32c_short, crc0 ) ^ crc2;
+                crc0 = crc32c_shift ( crc32c_short, (uint32_t)crc0 ) ^ crc1;
+                crc0 = crc32c_shift ( crc32c_short, (uint32_t)crc0 ) ^ crc2;
                 next += SHORT*2;
                 len -= SHORT*3;
         }
@@ -325,7 +325,7 @@ uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, unsigned long 
         };
 
         /* compute the crc for up to seven trailing bytes */
-        crc32bit = crc0;
+        crc32bit = (uint32_t)crc0;
         if ( ( len % 2 ) != 0 ) crc32bit = __builtin_ia32_crc32qi ( crc32bit, * ( next ) ); // 1 char, remain even
         next += len;
         switch ( len / 2 ) {
