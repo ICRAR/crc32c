@@ -20,6 +20,7 @@
 #    MA 02111-1307  USA
 #
 import glob
+import platform
 
 import distutils.ccompiler
 from setuptools import setup, Extension
@@ -27,24 +28,31 @@ from setuptools.command.build_ext import build_ext
 
 
 crcmod_ext = Extension('crc32c',
+                       define_macros=[('NDEBUG', None)],
                        depends=glob.glob('*.h'),
                        language='c',
-                       sources=['_crc32c.c', 'crc32c_adler.c', 'crc32c_sw.c', 'checksse42.c'],
+                       sources=['_crc32c.c', 'crc32c_sw.c'],
                        include_dirs=['.'])
+is_intel = platform.machine() in ['x86_64', 'AMD64']
 
 def get_extra_compile_args():
     # msvc is treated specially; otherwise we assume it's a unix compiler
     comp = distutils.ccompiler.get_default_compiler()
     if comp == 'msvc':
-        return ['/O2', '/DNDEBUG']
+        return ['/O2']
+    elif is_intel:
+        return ['-O3', '-msse4.2', '-mpclmul']
     else:
-        return ['-O3', '-msse4.2', '-mpclmul', '-DNDEBUG']
+        return ['-O3']
 
 class _build_ext(build_ext):
     """Custom build_ext command that includes extra compilation arguments"""
     def run(self):
         assert(len(self.distribution.ext_modules) == 1)
         self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args()
+        if is_intel:
+            self.distribution.ext_modules[0].define_macros += [('IS_INTEL', None)]
+            self.distribution.ext_modules[0].sources += ['crc32c_adler.c', 'checksse42.c']
         build_ext.run(self)
 
 

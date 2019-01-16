@@ -98,7 +98,6 @@ MOD_INIT(crc32c)
 	PyObject *m;
 
 	char *sw_mode = getenv("CRC32C_SW_MODE");
-	int has_hw_impl = _crc32c_intel_probe();
 	int force_sw_impl = sw_mode != NULL && (!strcmp(sw_mode, "1") || !strcmp(sw_mode, "force"));
 	int fallback_to_sw_impl = sw_mode != NULL && !strcmp(sw_mode, "auto");
 
@@ -106,10 +105,12 @@ MOD_INIT(crc32c)
 	if (force_sw_impl) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 	}
-	else if (has_hw_impl) {
+#if defined(IS_INTEL)
+	else if (_crc32c_intel_probe()) {
 		crc_fn = _crc32c_hw_adler;
 		crc32c_init_hw_adler();
 	}
+#endif
 	else if (fallback_to_sw_impl) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 	}
