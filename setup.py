@@ -19,6 +19,8 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 #    MA 02111-1307  USA
 #
+from config import setup_config
+
 import glob
 import platform
 
@@ -33,7 +35,14 @@ crcmod_ext = Extension('crc32c',
                        language='c',
                        sources=['_crc32c.c', 'crc32c_sw.c'],
                        include_dirs=['.'])
-is_intel = platform.machine() in ['x86_64', 'AMD64']
+
+config = setup_config()
+
+machine = config.machine()
+if not machine:
+    machine = platform.machine()
+
+is_intel = machine in ['x86_64', 'AMD64']
 
 def get_extra_compile_args():
     # msvc is treated specially; otherwise we assume it's a unix compiler
