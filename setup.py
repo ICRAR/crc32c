@@ -33,9 +33,8 @@ crcmod_ext = Extension('crc32c',
                        language='c',
                        sources=['_crc32c.c', 'crc32c_sw.c'],
                        include_dirs=['.'])
-is_intel = platform.machine() in ['x86_64', 'AMD64']
 
-def get_extra_compile_args():
+def get_extra_compile_args(is_intel):
     # msvc is treated specially; otherwise we assume it's a unix compiler
     comp = distutils.ccompiler.get_default_compiler()
     if comp == 'msvc':
@@ -47,9 +46,18 @@ def get_extra_compile_args():
 
 class _build_ext(build_ext):
     """Custom build_ext command that includes extra compilation arguments"""
+
+    user_options = build_ext.user_options + [
+        ('platform=', None, 'The target platform name')]
+
+    def initialize_options(self):
+        build_ext.initialize_options(self)
+        self.platform = platform.machine()
+
     def run(self):
         assert(len(self.distribution.ext_modules) == 1)
-        self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args()
+        is_intel = self.platform in ['x86_64', 'AMD64']
+        self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args(is_intel)
         if is_intel:
             self.distribution.ext_modules[0].define_macros += [('IS_INTEL', None)]
             self.distribution.ext_modules[0].sources += ['crc32c_adler.c', 'checksse42.c']
