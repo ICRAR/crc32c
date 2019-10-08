@@ -1,8 +1,8 @@
 crc32c
 ======
 
-.. image:: https://travis-ci.org/ICRAR/crc32c.svg?branch=master
-    :target: https://travis-ci.org/ICRAR/crc32c
+.. image:: https://travis-ci.com/ICRAR/crc32c.svg?branch=master
+    :target: https://travis-ci.com/ICRAR/crc32c
 .. image:: https://ci.appveyor.com/api/projects/status/lamys36iude1x180/branch/master?svg=true
     :target: https://ci.appveyor.com/project/rtobar/crc32c/branch/master
 .. image:: https://badge.fury.io/py/crc32c.svg
