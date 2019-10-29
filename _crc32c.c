@@ -116,8 +116,12 @@ MOD_INIT(crc32c)
 	}
 
 	else {
-		PyErr_SetString(PyExc_ImportError, import_error_msg);
-		return MOD_VAL(NULL);
+#if PY_MAJOR_VERSION >= 3
+		PyRun_SimpleString("print('SSE4.2 extensions providing a crc32c hardware instruction are NOT available in your processor.  A software implementation of the same has been loaded instead.')");
+#else
+		PyRun_SimpleString("print 'SSE4.2 extensions providing a crc32c hardware instruction are NOT available in your processor.  A software implementation of the same has been loaded instead.'");
+#endif	
+		crc_fn = _crc32c_sw_slicing_by_8;
 	}
 
 	MOD_DEF(m, "crc32c", "wrapper for crc32c Intel instruction", CRC32CMethods);
