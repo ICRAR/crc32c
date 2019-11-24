@@ -96,12 +96,13 @@ static PyMethodDef CRC32CMethods[] = {
 
 static const char *import_error_msg = "\n\n"
 "SSE4.2 extensions providing a crc32c hardware instruction are not available in\n"
-"your processor. If you still need to use the crc32c checksum algorithm this\n"
-"package comes with a software implementation that can be loaded instead. For\n"
-"that set the CRC32C_SW_MODE environment variable before loading the package to\n"
-"one of the following values:\n\n"
-" * 'auto' to use software implementation if no CPU hardware support is found.\n"
-" * 'force' to use software implementation regardless of CPU hardware support.\n"
+"your processor. This package comes with a software implementation, but this\n"
+"support has been opted out because the CRC32C_SW_MODE environment variable is\n"
+"set to \"none\". CRC32C_SW_MODE can take one of the following values:\n"
+" * If unset: use the software implementation if no hardware support is found\n"
+" * 'auto': as above, but will eventually be discontinued\n"
+" * 'force': use software implementation regardless of hardware support.\n"
+" * 'none': fail if no hardware support is found (this error).\n";
 
 /* Support for Python 2/3 */
 #if PY_MAJOR_VERSION >= 3
@@ -132,10 +133,10 @@ MOD_INIT(crc32c)
 		crc32c_init_hw_adler();
 	}
 #endif
-	else if (sw_mode == AUTO) {
+	else if (sw_mode == UNSPECIFIED || sw_mode == AUTO) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 	}
-	else {
+	else if (sw_mode == NONE) {
 		PyErr_SetString(PyExc_ImportError, import_error_msg);
 		return MOD_VAL(NULL);
 	}

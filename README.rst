@@ -23,16 +23,17 @@ Implementation details
 ----------------------
 
 By default,
-if your CPU doesn't support this instruction, the package will fail to load
-with an ``ImportError``.
-If you still need to use the crc32c checksum algorithm
-this package comes with a software implementation
-that can be loaded instead.
-For that set the ``CRC32C_SW_MODE`` environment variable
+if your CPU doesn't support this instruction,
+the package will fallback to use a software implementation
+of the crc32c checksum algorithm.
+This behavior can be changed by setting
+the ``CRC32C_SW_MODE`` environment variable
 to one of the following values:
 
-* ``auto``: use software implementation if no CPU hardware support is found.
-* ``force``: use software implementation regardless of CPU hardware support.
+* ``auto``: same as if unset, will eventually be discontinued.
+* ``force``: use software implementation regardless of hardware support.
+* ``none``: fail to import the module with an ``ImportError``
+  if no hardware support is found (old 1.x default behavior).
 
 Both the hardware- and software-based algorithms
 are based on `Mark Adler's code <http://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775>`_,
