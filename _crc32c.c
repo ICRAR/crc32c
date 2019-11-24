@@ -119,10 +119,11 @@ static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "crc32c", "wrapper
 MOD_INIT(crc32c)
 {
 	PyObject *m;
-
-	enum crc32c_sw_mode sw_mode = get_sw_mode();
-	crc_fn = NULL;
 	PyObject *hardware_based;
+	enum crc32c_sw_mode sw_mode;
+
+	sw_mode = get_sw_mode();
+	crc_fn = NULL;
 	if (sw_mode == FORCE) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 		hardware_based = Py_False;
