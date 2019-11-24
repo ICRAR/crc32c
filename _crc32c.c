@@ -3,8 +3,6 @@
  *   based on the Intel CRC32 instruction
  *   provided in the Intel SSE4.2 instruction set
  *
- *   If SSE4.2 is not supported on the platform, this module will not be able to get installed
- *
  *    ICRAR - International Centre for Radio Astronomy Research
  *    (c) UWA - The University of Western Australia, 2014
  *    Copyright by UWA (in the framework of the ICRAR)
