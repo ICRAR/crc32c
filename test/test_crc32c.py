@@ -21,9 +21,9 @@
 #
 
 import os
+import struct
 import sys
 import unittest
-import struct
 
 try:
     import crc32c
