@@ -20,12 +20,19 @@
 #    MA 02111-1307  USA
 #
 
+import os
 import sys
 import unittest
 import struct
 
 try:
+    import crc32c
     from crc32c import crc32
+    sw_mode = os.environ.get('CRC32C_SW_MODE')
+    if sw_mode == 'none' and not crc32c.hardware_based:
+        raise RuntimeError('"none" should force hardware support')
+    elif sw_mode == 'force' and crc32c.hardware_based:
+        raise RuntimeError('"force" should force software support')
 except ImportError:
     crc32 = None
 

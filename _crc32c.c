@@ -124,17 +124,21 @@ MOD_INIT(crc32c)
 
 	enum crc32c_sw_mode sw_mode = get_sw_mode();
 	crc_fn = NULL;
+	PyObject *hardware_based;
 	if (sw_mode == FORCE) {
 		crc_fn = _crc32c_sw_slicing_by_8;
+		hardware_based = Py_False;
 	}
 #if defined(IS_INTEL)
 	else if (_crc32c_intel_probe()) {
 		crc_fn = _crc32c_hw_adler;
 		crc32c_init_hw_adler();
+		hardware_based = Py_True;
 	}
 #endif
 	else if (sw_mode == UNSPECIFIED || sw_mode == AUTO) {
 		crc_fn = _crc32c_sw_slicing_by_8;
+		hardware_based = Py_False;
 	}
 	else if (sw_mode == NONE) {
 		PyErr_SetString(PyExc_ImportError, import_error_msg);
@@ -143,6 +147,10 @@ MOD_INIT(crc32c)
 
 	MOD_DEF(m, "crc32c", "wrapper for crc32c Intel instruction", CRC32CMethods);
 	if (m == NULL) {
+		return MOD_VAL(NULL);
+	}
+	Py_INCREF(hardware_based);
+	if (PyModule_AddObject(m, "hardware_based", hardware_based) < 0) {
 		return MOD_VAL(NULL);
 	}
 	return MOD_VAL(m);
