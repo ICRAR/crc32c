@@ -68,6 +68,7 @@ enum crc32c_sw_mode {
 	UNSPECIFIED,
 	AUTO,
 	FORCE,
+	NONE
 };
 
 static enum crc32c_sw_mode get_sw_mode()
@@ -81,6 +82,9 @@ static enum crc32c_sw_mode get_sw_mode()
 	}
 	else if (!strcmp(sw_mode, "force")) {
 		return FORCE;
+	}
+	else if (!strcmp(sw_mode, "none")) {
+		return NONE;
 	}
 	return UNSPECIFIED;
 }
