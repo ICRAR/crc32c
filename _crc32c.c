@@ -63,6 +63,27 @@ PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 	return PyLong_FromUnsignedLong(result);
 }
 
+/* The different values the SW mode preference can take */
+enum crc32c_sw_mode {
+	UNSPECIFIED,
+	AUTO,
+	FORCE,
+};
+
+static enum crc32c_sw_mode get_sw_mode()
+{
+	char *sw_mode = getenv("CRC32C_SW_MODE");
+	if (sw_mode == NULL) {
+		return UNSPECIFIED;
+	}
+	else if (!strcmp(sw_mode, "auto")) {
+		return AUTO;
+	}
+	else if (!strcmp(sw_mode, "1") || !strcmp(sw_mode, "force")) {
+		return FORCE;
+	}
+	return UNSPECIFIED;
+}
 
 static PyMethodDef CRC32CMethods[] = {
 	{"crc32",   crc32c_crc32,   METH_VARARGS, "Calculate crc32c using Intel SSE4.2 instruction."},
@@ -97,12 +118,9 @@ MOD_INIT(crc32c)
 {
 	PyObject *m;
 
-	char *sw_mode = getenv("CRC32C_SW_MODE");
-	int force_sw_impl = sw_mode != NULL && (!strcmp(sw_mode, "1") || !strcmp(sw_mode, "force"));
-	int fallback_to_sw_impl = sw_mode != NULL && !strcmp(sw_mode, "auto");
-
+	enum crc32c_sw_mode sw_mode = get_sw_mode();
 	crc_fn = NULL;
-	if (force_sw_impl) {
+	if (sw_mode == FORCE) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 	}
 #if defined(IS_INTEL)
@@ -111,10 +129,9 @@ MOD_INIT(crc32c)
 		crc32c_init_hw_adler();
 	}
 #endif
-	else if (fallback_to_sw_impl) {
+	else if (sw_mode == AUTO) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 	}
-
 	else {
 		PyErr_SetString(PyExc_ImportError, import_error_msg);
 		return MOD_VAL(NULL);
