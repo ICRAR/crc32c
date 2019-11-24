@@ -33,7 +33,6 @@ to one of the following values:
 
 * ``auto``: use software implementation if no CPU hardware support is found.
 * ``force``: use software implementation regardless of CPU hardware support.
-* ``1``: like ``force``, but will eventually be discontinued.
 
 Both the hardware- and software-based algorithms
 are based on `Mark Adler's code <http://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775>`_,

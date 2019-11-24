@@ -79,7 +79,7 @@ static enum crc32c_sw_mode get_sw_mode()
 	else if (!strcmp(sw_mode, "auto")) {
 		return AUTO;
 	}
-	else if (!strcmp(sw_mode, "1") || !strcmp(sw_mode, "force")) {
+	else if (!strcmp(sw_mode, "force")) {
 		return FORCE;
 	}
 	return UNSPECIFIED;
@@ -98,7 +98,6 @@ static const char *import_error_msg = "\n\n"
 "one of the following values:\n\n"
 " * 'auto' to use software implementation if no CPU hardware support is found.\n"
 " * 'force' to use software implementation regardless of CPU hardware support.\n"
-" * '1' means 'force', but will be eventually discontinued.\n";
 
 /* Support for Python 2/3 */
 #if PY_MAJOR_VERSION >= 3
