@@ -1,6 +1,6 @@
 # Changelog
 
-## Development version
+## [2.0]
 
 * Changed package import logic (#12).
   Instead of failing to import
@@ -66,3 +66,4 @@
 [1.5]: https://github.com/ICRAR/crc32c/releases/tag/v1.5
 [1.6]: https://github.com/ICRAR/crc32c/releases/tag/v1.6
 [1.7]: https://github.com/ICRAR/crc32c/releases/tag/v1.7
+[2.0]: https://github.com/ICRAR/crc32c/releases/tag/v2.0
