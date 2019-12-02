@@ -8,8 +8,10 @@ crc32c
 .. image:: https://badge.fury.io/py/crc32c.svg
     :target: https://badge.fury.io/py/crc32c
 
-This package exposes to Python the crc32c algorithm implemented in the SSE 4.2
-instruction set of Intel CPUs.
+This package implements the crc32c checksum algorithm.
+It automatically chooses between a hardware-based implementation
+(using the CRC32C SSE 4.2 instruction of Intel CPUs),
+or a software-based one when no hardware support can be found.
 
 Because ``crc32c`` is in PyPI, you can install it with::
 
