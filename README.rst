@@ -20,6 +20,7 @@ Because ``crc32c`` is in PyPI, you can install it with::
 Supported platforms are Linux and OSX using the gcc and clang compilers,
 and Windows using the Visual Studio compiler. Other compilers in
 Windows (MinGW for instance) might work.
+Binary wheels are also provided in PyPI for major platforms/architectures.
 
 Implementation details
 ----------------------
