@@ -1,4 +1,3 @@
-import shlex
 import os
 import subprocess as sp
 
@@ -6,7 +5,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def run(cmd):
-    print(" ".join(shlex.quote(p) for p in cmd))
+    print(" ".join(cmd))
     sp.check_call(cmd)
 
 

@@ -78,5 +78,5 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.pypi_password }}
-          # TODO: remove this
+          # TODO: remove this once upload works
           repository_url: https://test.pypi.org/legacy/
