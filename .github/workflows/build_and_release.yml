@@ -38,7 +38,7 @@ jobs:
           python -m cibuildwheel --output-dir wheelhouse
         env:
           CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: "python {project}/run-tests.py"
+          CIBW_TEST_COMMAND: "python -u {project}/run-tests.py"
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
