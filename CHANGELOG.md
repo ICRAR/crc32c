@@ -1,5 +1,19 @@
 # Changelog
 
+## Development version
+
+* Changed binary distribution generation strategy,
+  moving from a local+Travis+AppVeyor setup
+  to a unified script using GitHub Actions.
+* Fixed generation of source distribution
+  (two C source code files were missing from the tarball).
+  This bug was introduced in 1.6,
+  but the source code distributions found in PyPI
+  were not affected
+  because the environment were they were created
+  predates the bug,
+  and already contained refrences to the two missing files.
+
 ## [2.0]
 
 * Changed package import logic (#12).
