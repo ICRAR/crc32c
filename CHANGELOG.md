@@ -1,6 +1,6 @@
 # Changelog
 
-## Development version
+## [2.0.1]
 
 * Changed binary distribution generation strategy,
   moving from a local+Travis+AppVeyor setup
@@ -81,3 +81,4 @@
 [1.6]: https://github.com/ICRAR/crc32c/releases/tag/v1.6
 [1.7]: https://github.com/ICRAR/crc32c/releases/tag/v1.7
 [2.0]: https://github.com/ICRAR/crc32c/releases/tag/v2.0
+[2.0.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.0.1
