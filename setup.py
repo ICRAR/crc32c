@@ -31,7 +31,7 @@ crcmod_ext = Extension('crc32c',
                        define_macros=[('NDEBUG', None)],
                        depends=glob.glob('*.h'),
                        language='c',
-                       sources=['_crc32c.c', 'crc32c_sw.c'],
+                       sources=['_crc32c.c', 'checksse42.c', 'crc32c_adler.c', 'crc32c_sw.c'],
                        include_dirs=['.'])
 
 def get_extra_compile_args(is_intel):
@@ -60,7 +60,6 @@ class _build_ext(build_ext):
         self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args(is_intel)
         if is_intel:
             self.distribution.ext_modules[0].define_macros += [('IS_INTEL', None)]
-            self.distribution.ext_modules[0].sources += ['crc32c_adler.c', 'checksse42.c']
         build_ext.run(self)
 
 

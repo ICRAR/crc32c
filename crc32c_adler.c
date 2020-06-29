@@ -43,6 +43,7 @@
  *                              - Moved crc32q into macro's and put alternative code there for 32bit operation
 */
 
+#if defined(IS_INTEL)
 
 #include "common.h"
 
@@ -342,3 +343,5 @@ uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, unsigned long 
         }
         return ( uint32_t ) crc32bit;
 }
+
+#endif // defined(IS_INTEL)

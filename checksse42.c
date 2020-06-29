@@ -23,6 +23,8 @@
  *
  */
 
+#if defined(IS_INTEL)
+
 #if defined(_MSC_VER)
 #include <intrin.h>
 
@@ -47,3 +49,5 @@ int _crc32c_intel_probe(void) {
 	return (ecx & (1 << 20)) != 0;
 }
 #endif // defined(_MSC_VER)
+
+#endif // defined(IS_INTEL)
