@@ -1,0 +1,22 @@
+# let's go!
+language: python
+
+# Build and test in several python versions
+jobs:
+  include:
+    - python: "2.7"
+    - python: "3.4"
+    - python: "3.5"
+    - python: "3.6"
+    - python: "3.7"
+    - python: "3.8"
+    - python: "3.9-dev"
+
+before_install:
+- pip install pytest
+
+install:
+ - pip install -v .
+
+script:
+ - python run-tests.py
