@@ -69,7 +69,7 @@ enum crc32c_sw_mode {
 	NONE
 };
 
-static enum crc32c_sw_mode get_sw_mode()
+static enum crc32c_sw_mode get_sw_mode(void)
 {
 	char *sw_mode = getenv("CRC32C_SW_MODE");
 	if (sw_mode == NULL) {
