@@ -1,5 +1,11 @@
 # Changelog
 
+## Development version
+
+* Initial hardware-based implementation
+  on ARMv8 machines (#11).
+* Fixed minor warning.
+
 ## [2.0.1]
 
 * Changed binary distribution generation strategy,

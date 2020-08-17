@@ -8,7 +8,8 @@ crc32c
 
 This package implements the crc32c checksum algorithm.
 It automatically chooses between a hardware-based implementation
-(using the CRC32C SSE 4.2 instruction of Intel CPUs),
+(using the CRC32C SSE 4.2 instruction of Intel CPUs,
+and the crc32* instructions on ARMv8 CPUs),
 or a software-based one when no hardware support can be found.
 
 Because ``crc32c`` is in PyPI, you can install it with::
@@ -24,7 +25,7 @@ Implementation details
 ----------------------
 
 By default,
-if your CPU doesn't support this instruction,
+if your CPU doesn't have CRC32C hardware support,
 the package will fallback to use a software implementation
 of the crc32c checksum algorithm.
 This behavior can be changed by setting
@@ -36,11 +37,14 @@ to one of the following values:
 * ``none``: fail to import the module with an ``ImportError``
   if no hardware support is found (old 1.x default behavior).
 
-Both the hardware- and software-based algorithms
+Both the hardware- (Intel) and software-based algorithms
 are based on `Mark Adler's code <http://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775>`_,
 with some modifications required
 to make the code more portable
 and fit for inclusion within this python package.
+The ARMv8 hardware implementation
+is based on Google's `crc32c <https://github.com/google/crc32c>`_
+C++ library.
 
 Copyright
 ---------
@@ -52,16 +56,28 @@ This package is copyrighted::
  Copyright by UWA (in the framework of the ICRAR)
 
 The original crc32c algorithms,
-both software and hardware,
+both software and Intel-hardware,
 are copyrighted by::
 
  Copyright (C) 2013 Mark Adler
+
+The crc32c ARMv8 hardware code
+is copyrighted by::
+
+ Copyright 2017 The CRC32C Authors
+
 
 License
 -------
 
 This package is licensed under the LGPL-2.1 license.
 
-The original crc32c algorithm's code,
-both software and hardware,
+The original crc32c code,
+both software and for Intel SSE4.2 machines,
 are licensed under the BSD 3-clause license.
+
+The original crc32c code
+for ARM64 machines
+is licensed under a BSD-style license
+that can be found in the LICENSE file
+of Google's `crc32c <https://github.com/google/crc32c>`_.
