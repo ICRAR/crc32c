@@ -88,12 +88,12 @@ static enum crc32c_sw_mode get_sw_mode(void)
 }
 
 static PyMethodDef CRC32CMethods[] = {
-	{"crc32",   crc32c_crc32,   METH_VARARGS, "Calculate crc32c using Intel SSE4.2 instruction."},
+	{"crc32",   crc32c_crc32,   METH_VARARGS, "Calculate crc32c incrementally"},
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
 static const char *import_error_msg = "\n\n"
-"SSE4.2 extensions providing a crc32c hardware instruction are not available in\n"
+"Hardware extensions providing a crc32c hardware instruction are not available in\n"
 "your processor. This package comes with a software implementation, but this\n"
 "support has been opted out because the CRC32C_SW_MODE environment variable is\n"
 "set to \"none\". CRC32C_SW_MODE can take one of the following values:\n"
@@ -104,7 +104,7 @@ static const char *import_error_msg = "\n\n"
 
 /* Support for Python 2/3 */
 #if PY_MAJOR_VERSION >= 3
-static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "crc32c", "wrapper for crc32c Intel instruction", -1, CRC32CMethods};
+static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "crc32c", "crc32c implementation in hardware and software", -1, CRC32CMethods};
 	#define MOD_INIT(name) PyMODINIT_FUNC PyInit_##name(void)
 	#define MOD_DEF(m, name, doc, methods) \
 		m = PyModule_Create(&moduledef);
@@ -149,7 +149,7 @@ MOD_INIT(crc32c)
 		return MOD_VAL(NULL);
 	}
 
-	MOD_DEF(m, "crc32c", "wrapper for crc32c Intel instruction", CRC32CMethods);
+	MOD_DEF(m, "crc32c", "crc32c implementation in hardware and software", CRC32CMethods);
 	if (m == NULL) {
 		return MOD_VAL(NULL);
 	}
