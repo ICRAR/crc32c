@@ -134,6 +134,11 @@ MOD_INIT(crc32c)
 		crc32c_init_hw_adler();
 		hardware_based = Py_True;
 	}
+#elif defined(IS_ARM) && (defined(__linux__) || defined(linux))
+	else if (_crc32c_arm64_probe()) {
+		crc_fn = _crc32c_hw_arm64;
+		hardware_based = Py_True;
+	}
 #endif
 	else if (sw_mode == UNSPECIFIED || sw_mode == AUTO) {
 		crc_fn = _crc32c_sw_slicing_by_8;
