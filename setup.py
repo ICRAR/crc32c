@@ -31,16 +31,18 @@ crcmod_ext = Extension('crc32c',
                        define_macros=[('NDEBUG', None)],
                        depends=glob.glob('*.h'),
                        language='c',
-                       sources=['_crc32c.c', 'checkarm.c', 'checksse42.c', 'crc32c_adler.c', 'crc32c_sw.c'],
+                       sources=['_crc32c.c', 'checkarm.c', 'checksse42.c', 'crc32c_adler.c', 'crc32c_arm64.c', 'crc32c_sw.c'],
                        include_dirs=['.'])
 
-def get_extra_compile_args(is_intel):
+def get_extra_compile_args(is_intel, is_arm):
     # msvc is treated specially; otherwise we assume it's a unix compiler
     comp = distutils.ccompiler.get_default_compiler()
     if comp == 'msvc':
         return ['/O2']
     elif is_intel:
         return ['-O3', '-msse4.2', '-mpclmul']
+    elif is_arm:
+        return ['-O3', '-march=armv8-a+crc+crypto']
     else:
         return ['-O3']
 
@@ -60,7 +62,7 @@ class _build_ext(build_ext):
         is_intel = platform in ['x86_64', 'amd64']
         is_arm = platform in ['aarch64_be', 'aarch64', 'armv8b', 'armv8l']
         distutils.log.info("platform: %s, is_intel: %d, is_arm: %d", platform, is_intel, is_arm)
-        self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args(is_intel)
+        self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args(is_intel, is_arm)
         if is_intel:
             self.distribution.ext_modules[0].define_macros += [('IS_INTEL', None)]
         elif is_arm:
