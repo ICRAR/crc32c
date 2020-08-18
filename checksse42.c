@@ -34,6 +34,17 @@ int _crc32c_intel_probe(void)
 	__cpuid(info, 1);
 	return (info[2] & (1 << 20)) != 0;
 }
+
+#elif defined(__GNUC__)
+#include <cpuid.h>
+
+int _crc32c_intel_probe(void)
+{
+	unsigned int eax, ebx, ecx = 0, edx;
+	__get_cpuid(1, &eax, &ebx, &ecx, &edx);
+	return (ecx & (1 << 20)) != 0;
+}
+
 #else
 int _crc32c_intel_probe(void) {
 
