@@ -59,7 +59,7 @@ class _build_ext(build_ext):
     def run(self):
         assert(len(self.distribution.ext_modules) == 1)
         platform = self.platform.lower()
-        is_intel = platform in ['x86_64', 'amd64']
+        is_intel = platform in ['x86_64', 'amd64', 'i386', 'i686']
         is_arm = platform in ['aarch64_be', 'aarch64', 'armv8b', 'armv8l']
         distutils.log.info("platform: %s, is_intel: %d, is_arm: %d", platform, is_intel, is_arm)
         self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args(is_intel, is_arm)
