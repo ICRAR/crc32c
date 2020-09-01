@@ -89,6 +89,7 @@ static enum crc32c_sw_mode get_sw_mode(void)
 
 static PyMethodDef CRC32CMethods[] = {
 	{"crc32",   crc32c_crc32,   METH_VARARGS, "Calculate crc32c incrementally"},
+	{"crc32c",  crc32c_crc32,   METH_VARARGS, "Calculate crc32c incrementally"},
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
