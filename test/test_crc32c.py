@@ -24,6 +24,7 @@ import os
 import struct
 import sys
 import unittest
+import warnings
 
 try:
     import crc32c
@@ -52,11 +53,36 @@ else:
         for b in x:
             yield bytes([b])
 
+class warning_catcher(object):
+    '''Encapsulates proper warning catch-all logic in python 2.7 and 3'''
+
+    def __init__(self):
+        self.catcher = warnings.catch_warnings(record=True)
+
+    def __enter__(self):
+        ret = self.catcher.__enter__()
+        if sys.version_info[0] == 2:
+            warnings.simplefilter("always")
+        return ret
+
+    def __exit__(self, *args):
+        self.catcher.__exit__(*args)
+
+
 @unittest.skipIf(crc32c is None, 'no crc32c support in this platform')
 class TestMisc(unittest.TestCase):
 
     def test_zero(self):
         self.assertEqual(0, crc32c.crc32c(b''))
+
+    def test_crc32_deprecated(self):
+        with warning_catcher() as warns:
+            crc32c.crc32(b'')
+        self.assertEqual(len(warns), 1)
+        with warning_catcher() as warns:
+            crc32c.crc32c(b'')
+        self.assertEqual(len(warns), 0)
+
 
     def test_msvc_examples(self):
         # Examples taken from MSVC's online examples.
