@@ -10,6 +10,10 @@
   but we did not include it for this architecture.
   As a result,
   32-bit x86 wheels should run faster now.
+* Deprecated the ``crc32`` function
+  in favour of the new ``crc32c`` function,
+  which appart from the new, better name
+  has no other changes.
 * Fixed minor warning.
 
 ## [2.0.1]
