@@ -21,6 +21,35 @@ and Windows using the Visual Studio compiler. Other compilers in
 Windows (MinGW for instance) might work.
 Binary wheels are also provided in PyPI for major platforms/architectures.
 
+
+Usage
+-----
+
+The only method exposed by this module is ``crc32c(data, [crc])``.
+It computes the CRC32C checksum of ``data``
+starting with an initial ``crc`` checksum,
+similarly to how the built-in ``binascii.crc32`` works.
+It can thus be used like this:
+
+.. code-block:: python
+
+  print(crc32c.crc32c(b'hello world'))
+  # 3381945770
+  crc = crc32c.crc32c(b'hello')
+  print(crc32c.crc32c(b' world', crc))
+  # 3381945770
+
+In older versions,
+the function exposed by this module was called ``crc32``.
+That name is still present but deprecated,
+and will be removed in new versions of the library.
+
+Additionally one can consult
+the ``hardware_based`` module-level value
+to check if the algorithm currently in use
+is software- or hardware-based.
+
+
 Implementation details
 ----------------------
 
