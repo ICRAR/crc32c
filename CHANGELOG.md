@@ -4,6 +4,12 @@
 
 * Initial hardware-based implementation
   on ARMv8 machines (#11).
+* Add hardware-based implementation
+  on x86 32bit machines.
+  The C code was already there,
+  but we did not include it for this architecture.
+  As a result,
+  32-bit x86 wheels should run faster now.
 * Fixed minor warning.
 
 ## [2.0.1]
