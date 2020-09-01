@@ -35,7 +35,7 @@
 static crc_function crc_fn;
 
 static
-PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
+PyObject* crc32c_crc32c(PyObject *self, PyObject *args) {
 	Py_buffer pbin;
 	unsigned char *bin_data = NULL;
 	uint32_t crc = 0U, result;
@@ -59,6 +59,17 @@ PyObject* crc32c_crc32(PyObject *self, PyObject *args) {
 
 	PyBuffer_Release(&pbin);
 	return PyLong_FromUnsignedLong(result);
+}
+
+static
+PyObject *crc32c_crc32(PyObject *self, PyObject *args)
+{
+	if (PyErr_WarnEx(PyExc_DeprecationWarning,
+	                 "crc32c.crc32 will be eventually removed, use crc32c.crc32c instead",
+	                 1) == -1) {
+		return NULL;
+	}
+	return crc32c_crc32c(self, args);
 }
 
 /* The different values the SW mode preference can take */
@@ -88,8 +99,8 @@ static enum crc32c_sw_mode get_sw_mode(void)
 }
 
 static PyMethodDef CRC32CMethods[] = {
-	{"crc32",   crc32c_crc32,   METH_VARARGS, "Calculate crc32c incrementally"},
-	{"crc32c",  crc32c_crc32,   METH_VARARGS, "Calculate crc32c incrementally"},
+	{"crc32",   crc32c_crc32,   METH_VARARGS, "Calculate crc32c incrementally (deprecated)"},
+	{"crc32c",  crc32c_crc32c,  METH_VARARGS, "Calculate crc32c incrementally"},
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
