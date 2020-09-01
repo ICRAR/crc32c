@@ -16,7 +16,7 @@ def run_tests():
         [
             sys.executable,
             "-c",
-            "import crc32c; import time; x = b' ' * int(1e9); n = 10; s = time.time(); [crc32c.crc32(x) for _ in range(n)]; print('Ran at %.3f [GB/s]' % (n/(time.time() - s),))",
+            "import crc32c; import time; x = b' ' * int(1e9); n = 10; s = time.time(); [crc32c.crc32c(x) for _ in range(n)]; print('Ran at %.3f [GB/s]' % (n/(time.time() - s),))",
         ]
     )
 

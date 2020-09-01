@@ -27,14 +27,13 @@ import unittest
 
 try:
     import crc32c
-    from crc32c import crc32
     sw_mode = os.environ.get('CRC32C_SW_MODE')
     if sw_mode == 'none' and not crc32c.hardware_based:
         raise RuntimeError('"none" should force hardware support')
     elif sw_mode == 'force' and crc32c.hardware_based:
         raise RuntimeError('"force" should force software support')
 except ImportError:
-    crc32 = None
+    crc32c = None
 
 def ulonglong_as_bytes(x):
     return struct.pack('<Q', x)
@@ -53,18 +52,18 @@ else:
         for b in x:
             yield bytes([b])
 
-@unittest.skipIf(crc32 is None, 'no crc32c support in this platform')
+@unittest.skipIf(crc32c is None, 'no crc32c support in this platform')
 class TestMisc(unittest.TestCase):
 
     def test_zero(self):
-        self.assertEqual(0, crc32(b''))
+        self.assertEqual(0, crc32c.crc32c(b''))
 
     def test_msvc_examples(self):
         # Examples taken from MSVC's online examples.
         # Values are not xor'd in the examples though, so we do it here
         max32 = 0xffffffff
         def assert_msvc_vals(b, crc, expected_crc):
-            self.assertEqual(expected_crc ^ max32, crc32(b, crc ^ max32))
+            self.assertEqual(expected_crc ^ max32, crc32c.crc32c(b, crc ^ max32))
         assert_msvc_vals(uchar_as_bytes(100), 1, 1412925310)
         assert_msvc_vals(ushort_as_bytes(1000), 1, 3870914500)
         assert_msvc_vals(uint_as_bytes(50000), 1, 971731851)
@@ -85,15 +84,15 @@ b"propter desperationem sapientiae, illi propter spem vivere."), 0xfcb7575a)
 
 class Crc32cChecks(object):
     def test_all(self):
-        self.assertEqual(self.checksum, crc32(self.val))
+        self.assertEqual(self.checksum, crc32c.crc32c(self.val))
     def test_piece_by_piece(self):
         c = 0
         for x in as_individual_bytes(self.val):
-            c = crc32(x, c)
+            c = crc32c.crc32c(x, c)
         self.assertEqual(self.checksum, c)
 
 # Generate the actual unittest classes for each of the testing values
-if crc32 is not None:
+if crc32c is not None:
     for name, val, checksum in (numbers1, numbers2, numbers3, phrase, long_phrase):
         classname = 'Test%s' % name
         locals()[classname] = type(classname, (unittest.TestCase, Crc32cChecks), {'val': val, 'checksum': checksum})
