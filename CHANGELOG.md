@@ -1,6 +1,6 @@
 # Changelog
 
-## Development version
+## [2.1]
 
 * Initial hardware-based implementation
   on ARMv8 machines (#11).
@@ -98,3 +98,4 @@
 [1.7]: https://github.com/ICRAR/crc32c/releases/tag/v1.7
 [2.0]: https://github.com/ICRAR/crc32c/releases/tag/v2.0
 [2.0.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.0.1
+[2.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.1
