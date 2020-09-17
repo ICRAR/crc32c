@@ -12,7 +12,7 @@
   32-bit x86 wheels should run faster now.
 * Deprecated the ``crc32`` function
   in favour of the new ``crc32c`` function,
-  which appart from the new, better name
+  which apart from the new, better name
   has no other changes.
 * Fixed minor warning.
 
@@ -26,16 +26,16 @@
   This bug was introduced in 1.6,
   but the source code distributions found in PyPI
   were not affected
-  because the environment were they were created
+  because the environment where they were created
   predates the bug,
-  and already contained refrences to the two missing files.
+  and already contained references to the two missing files.
 
 ## [2.0]
 
 * Changed package import logic (#12).
   Instead of failing to import
   if hardware support is not found,
-  the package now automatically fallsback
+  the package now automatically falls back
   to using the software implementation,
   and thus can always be imported.
   Old behavior can still be obtained
