@@ -66,11 +66,21 @@ to one of the following values:
 * ``none``: fail to import the module with an ``ImportError``
   if no hardware support is found (old 1.x default behavior).
 
-Both the hardware- (Intel) and software-based algorithms
-are based on `Mark Adler's code <http://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775>`_,
+The software algorithm is based
+on Intel's `slice-by-8 package <https://sourceforge.net/projects/slicing-by-8/>`_,
+with some adaptations done
+by `Evan Jones <https://www.evanjones.ca/crc32c.html>`_
+and packaging provided by `Ferry Toth <https://github.com/htot/crc32c>`_.
+Further adaptations were required
+to make the code more portable
+and fit for inclusion within this python package.
+
+The Intel SSE 4.2 algorithm
+is based on `Mark Adler's code <http://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775>`_,
 with some modifications required
 to make the code more portable
 and fit for inclusion within this python package.
+
 The ARMv8 hardware implementation
 is based on Google's `crc32c <https://github.com/google/crc32c>`_
 C++ library.
@@ -84,9 +94,19 @@ This package is copyrighted::
  (c) UWA - The University of Western Australia, 2017
  Copyright by UWA (in the framework of the ICRAR)
 
-The original crc32c algorithms,
-both software and Intel-hardware,
+The original slice-by-8 software algorithm
+is copyrighted by::
+
+ Copyright (c) 2004-2006 Intel Corporation - All Rights Reserved
+
+Further adaptations to the slice-by-8 algorithm
+previous to the inclusion in this package
 are copyrighted by::
+
+ Copyright 2008,2009,2010 Massachusetts Institute of Technology.
+
+The original Intel SSE 4.2 crc32c algorithm
+is copyrighted by::
 
  Copyright (C) 2013 Mark Adler
 
@@ -95,18 +115,26 @@ is copyrighted by::
 
  Copyright 2017 The CRC32C Authors
 
+A copy of the `AUTHORS <AUTHORS.google-crc32c>`_ file
+from Google's crc32c project
+as it was at the time of copying the code
+is included in this repository.
 
 License
 -------
 
-This package is licensed under the LGPL-2.1 license.
+This package is licensed under `the LGPL-2.1 license <LICENSE>`_.
 
-The original crc32c code,
-both software and for Intel SSE4.2 machines,
-are licensed under the BSD 3-clause license.
+The original slice-by-8 software algorithm
+is licensed under `the 2-clause BSD licence
+<https://opensource.org/licenses/bsd-license.html>`_.
 
-The original crc32c code
-for ARM64 machines
-is licensed under a BSD-style license
-that can be found in the LICENSE file
-of Google's `crc32c <https://github.com/google/crc32c>`_.
+Further modifications to the slice-by-8 software algorithm
+are licensed under `a 3-clause BSD licence <LICENSE.slice-by-8>`_
+
+The original Intel SSE 4.2 crc32c algorithm's code
+is licensed under a custom license
+embedded in the ``crc32c_adler.c`` file.
+
+The original crc32c ARMv8 hardware code
+is licensed under `a 3-clause BSD license <LICENSE.google-crc32c>`_.
