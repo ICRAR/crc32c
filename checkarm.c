@@ -26,10 +26,13 @@
 
 #include <sys/auxv.h>
 
+#ifndef HWCAP_CRC32
+/* see arch/arm64/include/uapi/asm/hwcap.h */
+#define HWCAP_CRC32 (1 << 7)
+#endif
+
 int _crc32c_arm64_probe(void)
 {
-	/* see arch/arm64/include/uapi/asm/hwcap.h */
-	const unsigned long HWCAP_CRC32 = 1 << 7;
 	unsigned long auxval;
 	auxval = getauxval(AT_HWCAP);
 	return (auxval & HWCAP_CRC32) != 0;
