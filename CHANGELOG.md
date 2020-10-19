@@ -2,6 +2,14 @@
 
 ## Development version
 
+* Fixed software algorithm implementation
+  to work on big endian machines (#22).
+  Now the algorithm works correctly,
+  with numerical (uint32_t) values
+  still representing the correct checksum.
+* Added a new ``big_endian`` attribute
+  that indicates if the currently platform
+  is big endian or not.
 * Fixed compilation issues in some ARM Linux boxes (#21).
 
 ## [2.1]
