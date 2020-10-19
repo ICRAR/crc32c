@@ -11,6 +11,13 @@ def run(cmd):
 
 
 def run_tests():
+    run(
+        [
+            sys.executable,
+            "-c",
+            "import crc32c; print('Is big endian? ', crc32c.big_endian)",
+        ]
+    )
     run([sys.executable, "-mpytest", os.path.join(SCRIPT_DIR, "test")])
     run(
         [
