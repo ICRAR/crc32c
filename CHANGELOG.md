@@ -1,5 +1,9 @@
 # Changelog
 
+## Development version
+
+* Fixed compilation issues in some ARM Linux boxes (#21).
+
 ## [2.1]
 
 * Initial hardware-based implementation
