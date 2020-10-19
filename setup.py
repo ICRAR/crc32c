@@ -93,7 +93,7 @@ setup(name='crc32c',
       author='The ICRAR DIA Team',
       url='https://github.com/ICRAR/crc32c',
       author_email='rtobar@icrar.org',
-      version='2.1',
+      version='2.2',
       license="LGPLv2.1+",
       description=('A python package implementing the crc32c algorithm'
       'in hardware and software'),

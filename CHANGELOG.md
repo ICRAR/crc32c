@@ -1,6 +1,6 @@
 # Changelog
 
-## Development version
+## [2.2]
 
 * Fixed software algorithm implementation
   to work on big endian machines (#22).
@@ -111,3 +111,4 @@
 [2.0]: https://github.com/ICRAR/crc32c/releases/tag/v2.0
 [2.0.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.0.1
 [2.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.1
+[2.2]: https://github.com/ICRAR/crc32c/releases/tag/v2.2
