@@ -134,6 +134,7 @@ MOD_INIT(crc32c)
 	PyObject *m;
 	PyObject *hardware_based;
 	enum crc32c_sw_mode sw_mode;
+	const uint32_t n = 1;
 
 	sw_mode = get_sw_mode();
 	crc_fn = NULL;
@@ -162,7 +163,6 @@ MOD_INIT(crc32c)
 		return MOD_VAL(NULL);
 	}
 
-	const uint32_t n = 1;
 	is_big_endian = (*(const char *)(&n) == 0);
 
 	MOD_DEF(m, "crc32c", "crc32c implementation in hardware and software", CRC32CMethods);
