@@ -72,4 +72,7 @@
 /* crc32c function signature */
 typedef uint32_t (* crc_function)(uint32_t crc, unsigned const char *data, unsigned long length);
 
+/* Are we big endian? */
+extern int is_big_endian;
+
 #endif // _COMMON_H_

@@ -33,6 +33,7 @@
 
 /* Set at module loading time */
 static crc_function crc_fn;
+int is_big_endian;
 
 static
 PyObject* crc32c_crc32c(PyObject *self, PyObject *args) {
@@ -161,12 +162,18 @@ MOD_INIT(crc32c)
 		return MOD_VAL(NULL);
 	}
 
+	const uint32_t n = 1;
+	is_big_endian = (*(const char *)(&n) == 0);
+
 	MOD_DEF(m, "crc32c", "crc32c implementation in hardware and software", CRC32CMethods);
 	if (m == NULL) {
 		return MOD_VAL(NULL);
 	}
 	Py_INCREF(hardware_based);
 	if (PyModule_AddObject(m, "hardware_based", hardware_based) < 0) {
+		return MOD_VAL(NULL);
+	}
+	if (PyModule_AddIntConstant(m, "big_endian", is_big_endian) < 0) {
 		return MOD_VAL(NULL);
 	}
 	return MOD_VAL(m);
