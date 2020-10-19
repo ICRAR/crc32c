@@ -510,23 +510,43 @@ uint32_t _crc32c_sw_slicing_by_8(uint32_t crc, unsigned const char* data, unsign
 	running_length = length & ~(sizeof(uint64_t) - 1);
 	end_bytes = length - running_length;
 
-	for (li = 0; li < running_length/8; li++) {
-		crc ^= *(uint32_t*) p_buf;
-		p_buf += 4;
-		term1 = crc_tableil8_o88[crc & 0x000000FF] ^
-		        crc_tableil8_o80[(crc >> 8) & 0x000000FF];
-		term2 = crc >> 16;
-		crc = term1 ^
-		      crc_tableil8_o72[term2 & 0x000000FF] ^
-		      crc_tableil8_o64[(term2 >> 8) & 0x000000FF];
-		term1 = crc_tableil8_o56[(*(uint32_t *)p_buf) & 0x000000FF] ^
-		        crc_tableil8_o48[((*(uint32_t *)p_buf) >> 8) & 0x000000FF];
+	if (is_big_endian) {
+		for (li = 0; li < running_length/8; li++) {
+			crc ^= (*p_buf++);
+			crc ^= (*p_buf++) << 8;
+			crc ^= (*p_buf++) << 16;
+			crc ^= (*p_buf++) << 24;
+			term1 = crc_tableil8_o88[crc & 0x000000FF] ^
+			        crc_tableil8_o80[(crc >> 8) & 0x000000FF];
+			term2 = crc >> 16;
+			crc = term1 ^
+			      crc_tableil8_o72[term2 & 0x000000FF] ^
+			      crc_tableil8_o64[(term2 >> 8) & 0x000000FF];
+			crc ^= crc_tableil8_o56[*p_buf++];
+			crc ^= crc_tableil8_o48[*p_buf++];
+			crc ^= crc_tableil8_o40[*p_buf++];
+			crc ^= crc_tableil8_o32[*p_buf++];
+		}
+	}
+	else {
+		for (li = 0; li < running_length/8; li++) {
+			crc ^= *(uint32_t*) p_buf;
+			p_buf += 4;
+			term1 = crc_tableil8_o88[crc & 0x000000FF] ^
+			        crc_tableil8_o80[(crc >> 8) & 0x000000FF];
+			term2 = crc >> 16;
+			crc = term1 ^
+			      crc_tableil8_o72[term2 & 0x000000FF] ^
+			      crc_tableil8_o64[(term2 >> 8) & 0x000000FF];
+			term1 = crc_tableil8_o56[(*(uint32_t *)p_buf) & 0x000000FF] ^
+			        crc_tableil8_o48[((*(uint32_t *)p_buf) >> 8) & 0x000000FF];
 
-		term2 = (*(uint32_t *)p_buf) >> 16;
-		crc = crc ^ term1 ^
-		      crc_tableil8_o40[term2  & 0x000000FF] ^
-		      crc_tableil8_o32[(term2 >> 8) & 0x000000FF];
-		p_buf += 4;
+			term2 = (*(uint32_t *)p_buf) >> 16;
+			crc = crc ^ term1 ^
+			      crc_tableil8_o40[term2  & 0x000000FF] ^
+			      crc_tableil8_o32[(term2 >> 8) & 0x000000FF];
+			p_buf += 4;
+		}
 	}
 
 	for (li = 0; li < end_bytes; li++) {
