@@ -29,10 +29,10 @@ from setuptools.command.build_ext import build_ext
 
 crcmod_ext = Extension('crc32c',
                        define_macros=[('NDEBUG', None)],
-                       depends=glob.glob('*.h'),
+                       depends=glob.glob('src/*.h'),
                        language='c',
-                       sources=['_crc32c.c', 'checkarm.c', 'checksse42.c', 'crc32c_adler.c', 'crc32c_arm64.c', 'crc32c_sw.c'],
-                       include_dirs=['.'])
+                       sources=sorted(glob.glob('src/*.c')),
+                       include_dirs=['src'])
 
 def get_extra_compile_args(is_intel, is_arm):
     # msvc is treated specially; otherwise we assume it's a unix compiler

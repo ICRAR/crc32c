@@ -134,7 +134,7 @@ are licensed under `a 3-clause BSD licence <LICENSE.slice-by-8>`_
 
 The original Intel SSE 4.2 crc32c algorithm's code
 is licensed under a custom license
-embedded in the ``crc32c_adler.c`` file.
+embedded in the ``src/crc32c_adler.c`` file.
 
 The original crc32c ARMv8 hardware code
 is licensed under `a 3-clause BSD license <LICENSE.google-crc32c>`_.
