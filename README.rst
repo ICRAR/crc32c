@@ -3,8 +3,23 @@ crc32c
 
 .. image:: https://github.com/ICRAR/crc32c/workflows/Build%20and%20release%20to%20PyPI/badge.svg?branch=master
 
+.. image:: https://travis-ci.com/ICRAR/crc32c.svg?branch=master
+    :target: https://travis-ci.com/ICRAR/crc32c
+
 .. image:: https://badge.fury.io/py/crc32c.svg
     :target: https://badge.fury.io/py/crc32c
+
+.. image:: https://img.shields.io/pypi/pyversions/crc32c.svg
+    :target: https://pypi.python.org/pypi/crc32c
+
+.. image:: https://img.shields.io/pypi/dd/crc32c.svg
+    :target: https://pypi.python.org/pypi/crc32c
+
+.. image:: https://img.shields.io/pypi/dw/crc32c.svg
+    :target: https://pypi.python.org/pypi/crc32c
+
+.. image:: https://img.shields.io/pypi/dm/crc32c.svg
+    :target: https://pypi.python.org/pypi/crc32c
 
 This package implements the crc32c checksum algorithm.
 It automatically chooses between a hardware-based implementation
