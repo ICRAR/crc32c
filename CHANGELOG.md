@@ -1,6 +1,6 @@
 # Changelog
 
-## Development version
+## [2.2.post0]
 
 * Updated GitHub Actions
   to produce ARM64 Linux binary wheels
@@ -123,3 +123,4 @@
 [2.0.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.0.1
 [2.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.1
 [2.2]: https://github.com/ICRAR/crc32c/releases/tag/v2.2
+[2.2.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.2.post0
