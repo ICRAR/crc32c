@@ -1,5 +1,16 @@
 # Changelog
 
+## Development version
+
+* Updated GitHub Actions
+  to produce ARM64 Linux binary wheels
+  and publish them to PyPI.
+* Removed Windows python 2.7 binary wheels.
+  There are two reasons:
+  cibuildwheels has removed such support,
+  our Windows user base is < %5,
+  and our Python 2.7 user base is also < %5.
+
 ## [2.2]
 
 * Fixed software algorithm implementation
