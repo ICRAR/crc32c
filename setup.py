@@ -96,7 +96,7 @@ setup(name='crc32c',
       version='2.2.post0',
       license="LGPLv2.1+",
       description=('A python package implementing the crc32c algorithm'
-      'in hardware and software'),
+      ' in hardware and software'),
       long_description=long_description,
       long_description_content_type='text/x-rst',
       classifiers=classifiers,
