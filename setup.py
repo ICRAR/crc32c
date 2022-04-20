@@ -20,7 +20,7 @@
 #    MA 02111-1307  USA
 #
 import glob
-import platform
+import sysconfig
 
 import distutils.ccompiler
 from setuptools import setup, Extension
@@ -54,13 +54,13 @@ class _build_ext(build_ext):
 
     def initialize_options(self):
         build_ext.initialize_options(self)
-        self.platform = platform.machine()
+        self.platform = sysconfig.get_platform()
 
     def run(self):
         assert(len(self.distribution.ext_modules) == 1)
         platform = self.platform.lower()
-        is_intel = platform in ['x86_64', 'amd64', 'i386', 'i686']
-        is_arm = platform in ['aarch64_be', 'aarch64', 'armv8b', 'armv8l']
+        is_arm = any(arch in platform for arch in ('aarch64_be', 'aarch64', 'armv8b', 'armv8l', 'universal2'))
+        is_intel = any(arch in platform for arch in ('x86_64', 'amd64', 'i386', 'i686', 'universal2'))
         distutils.log.info("platform: %s, is_intel: %d, is_arm: %d", platform, is_intel, is_arm)
         self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args(is_intel, is_arm)
         build_ext.run(self)
