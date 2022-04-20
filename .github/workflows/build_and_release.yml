@@ -36,6 +36,8 @@ jobs:
           CIBW_ARCHS_LINUX: ${{matrix.arch}}
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "python -u {project}/run-tests.py"
+          CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
+          CIBW_TEST_SKIP: '*macosx_arm64 *universal2:arm64'
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
