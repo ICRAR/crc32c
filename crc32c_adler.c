@@ -43,9 +43,9 @@
  *                              - Moved crc32q into macro's and put alternative code there for 32bit operation
 */
 
-#if defined(IS_INTEL)
-
 #include "common.h"
+
+#if defined(IS_INTEL)
 
 /*
  * MSVC/icc don't have __builtin_ia32_crc32_* functions. Instead they have

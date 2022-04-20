@@ -26,6 +26,12 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+#if defined(__x86_64__) || defined(_M_X64) || defined(i386) || defined(__i386__) || defined(__i386) || defined(_M_IX86)
+# define IS_INTEL
+#elif defined(__aarch64__) || defined(_M_ARM64)
+# define IS_ARM
+#endif
+
 /* inline support (it's not a keyword in MSVC for C code) */
 #if defined(_MSC_VER)
 # define CRC32C_INLINE __inline

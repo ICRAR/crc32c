@@ -12,6 +12,8 @@
 // Adjusted from https://github.com/google/crc32c to be fit for inclusion
 // into this python package
 
+#include "common.h"
+
 #if defined(IS_ARM) && (defined(__linux__) || defined(linux))
 
 #include <stddef.h>

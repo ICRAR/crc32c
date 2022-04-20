@@ -22,6 +22,9 @@
  * MA 02111-1307  USA
  *
  */
+
+#include "common.h"
+
 #if defined(IS_ARM) && (defined(__linux__) || defined(linux))
 
 #include <sys/auxv.h>

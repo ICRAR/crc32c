@@ -23,6 +23,8 @@
  *
  */
 
+#include "common.h"
+
 #if defined(IS_INTEL)
 
 #if defined(_MSC_VER)

@@ -63,10 +63,6 @@ class _build_ext(build_ext):
         is_arm = platform in ['aarch64_be', 'aarch64', 'armv8b', 'armv8l']
         distutils.log.info("platform: %s, is_intel: %d, is_arm: %d", platform, is_intel, is_arm)
         self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args(is_intel, is_arm)
-        if is_intel:
-            self.distribution.ext_modules[0].define_macros += [('IS_INTEL', None)]
-        elif is_arm:
-            self.distribution.ext_modules[0].define_macros += [('IS_ARM', None)]
         build_ext.run(self)
 
 
