@@ -1,5 +1,6 @@
 # let's go!
 language: python
+dist: focal
 
 # Build and test in several python versions
 jobs:
