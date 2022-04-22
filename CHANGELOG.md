@@ -7,6 +7,7 @@
   alongside ``arm64`` and ``x86_64`` ones;
   added step to GitHub Actions to generate and publish them (#28).
 * Mention explicit support for Python 3.10.
+* Fixed minor compilation warning in ARM64 builds.
 
 ## [2.2.post0]
 

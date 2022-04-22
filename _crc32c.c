@@ -27,6 +27,7 @@
 
 #include <Python.h>
 
+#include "checkarm.h"
 #include "checksse42.h"
 #include "common.h"
 #include "crc32c.h"
