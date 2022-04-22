@@ -10,12 +10,20 @@ def run(cmd):
     sp.check_call(cmd)
 
 
-def run_tests():
+def run_tests(crc32c_sw_mode):
+    os.environ["CRC32C_SW_MODE"] = crc32c_sw_mode
+    message = "# Tests for CRC32C_SW_MODE: %s #" % crc32c_sw_mode
+    hashes = '#' * len(message)
+    print("\n" + hashes)
+    print(message)
+    print(hashes + "\n")
     run(
         [
             sys.executable,
             "-c",
-            "import crc32c; print('Is big endian? ', crc32c.big_endian)",
+            ("import crc32c;"
+             "print('Is big endian? ', crc32c.big_endian);"
+             "print('Is hardware based? ', crc32c.hardware_based);")
         ]
     )
     run([sys.executable, "-mpytest", os.path.join(SCRIPT_DIR, "test")])
@@ -29,9 +37,8 @@ def run_tests():
 
 
 def main():
-    run_tests()
-    os.environ["CRC32C_SW_MODE"] = "force"
-    run_tests()
+    run_tests("auto")
+    run_tests("force")
 
 
 if __name__ == "__main__":
