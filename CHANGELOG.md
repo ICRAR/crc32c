@@ -1,5 +1,12 @@
 # Changelog
 
+## Development version
+
+* Improved macro definition logic and platform detection
+  to enable building ``universal2`` binary wheels for macOS,
+  alongside ``arm64`` and ``x86_64`` ones;
+  added step to GitHub Actions to generate and publish them (#28).
+
 ## [2.2.post0]
 
 * Updated GitHub Actions
