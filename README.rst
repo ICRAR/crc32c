@@ -45,10 +45,11 @@ That name is still present but deprecated,
 and will be removed in new versions of the library.
 
 Additionally one can consult
-the ``hardware_based`` module-level value
-to check if the algorithm currently in use
-is software- or hardware-based.
+the following module-level values:
 
+ * ``hardware_based`` indicates if the algorithm in use
+   is software- or hardware-based.
+ * ``big_endian`` indicates whether the platform is big endian or not.
 
 Implementation details
 ----------------------
