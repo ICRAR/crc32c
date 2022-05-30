@@ -1,6 +1,6 @@
 # Changelog
 
-## Development version
+## [2.3]
 
 * Improved macro definition logic and platform detection
   to enable building ``universal2`` binary wheels for macOS,
@@ -133,3 +133,4 @@
 [2.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.1
 [2.2]: https://github.com/ICRAR/crc32c/releases/tag/v2.2
 [2.2.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.2.post0
+[2.3]: https://github.com/ICRAR/crc32c/releases/tag/v2.3
