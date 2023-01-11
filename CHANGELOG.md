@@ -1,5 +1,9 @@
 # Changelog
 
+## Development version
+
+* Mention explicit support for Python 3.11.
+
 ## [2.3]
 
 * Improved macro definition logic and platform detection
