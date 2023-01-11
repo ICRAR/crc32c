@@ -1,8 +1,9 @@
 # Changelog
 
-## Development version
+## [2.3.post0]
 
 * Mention explicit support for Python 3.11.
+* Re-generating wheels to get 3.11 versions.
 
 ## [2.3]
 
@@ -138,3 +139,4 @@
 [2.2]: https://github.com/ICRAR/crc32c/releases/tag/v2.2
 [2.2.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.2.post0
 [2.3]: https://github.com/ICRAR/crc32c/releases/tag/v2.3
+[2.3.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.3.post0
