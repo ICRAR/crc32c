@@ -34,38 +34,6 @@ crcmod_ext = Extension('crc32c',
                        sources=['_crc32c.c', 'checkarm.c', 'checksse42.c', 'crc32c_adler.c', 'crc32c_arm64.c', 'crc32c_sw.c'],
                        include_dirs=['.'])
 
-def get_extra_compile_args(is_intel, is_arm):
-    # msvc is treated specially; otherwise we assume it's a unix compiler
-    comp = distutils.ccompiler.get_default_compiler()
-    if comp == 'msvc':
-        return ['/O2']
-    elif is_intel:
-        return ['-O3', '-msse4.2', '-mpclmul']
-    elif is_arm:
-        return ['-O3', '-march=armv8-a+crc+crypto']
-    else:
-        return ['-O3']
-
-class _build_ext(build_ext):
-    """Custom build_ext command that includes extra compilation arguments"""
-
-    user_options = build_ext.user_options + [
-        ('platform=', None, 'The target platform name')]
-
-    def initialize_options(self):
-        build_ext.initialize_options(self)
-        self.platform = sysconfig.get_platform()
-
-    def run(self):
-        assert(len(self.distribution.ext_modules) == 1)
-        platform = self.platform.lower()
-        is_arm = any(arch in platform for arch in ('aarch64_be', 'aarch64', 'armv8b', 'armv8l', 'universal2'))
-        is_intel = any(arch in platform for arch in ('x86_64', 'amd64', 'i386', 'i686', 'universal2'))
-        distutils.log.info("platform: %s, is_intel: %d, is_arm: %d", platform, is_intel, is_arm)
-        self.distribution.ext_modules[0].extra_compile_args = get_extra_compile_args(is_intel, is_arm)
-        build_ext.run(self)
-
-
 classifiers = [
     # There's no more specific classifier for LGPLv2.1+
     "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
@@ -100,5 +68,4 @@ setup(name='crc32c',
       long_description_content_type='text/x-rst',
       classifiers=classifiers,
       ext_modules=[crcmod_ext],
-      cmdclass = {'build_ext': _build_ext},
       test_suite="test")
