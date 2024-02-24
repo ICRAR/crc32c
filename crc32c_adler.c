@@ -47,6 +47,12 @@
 
 #if defined(IS_INTEL)
 
+#if defined(__GNUC__)
+# define ATTR_CRC32 __attribute__ ((target("sse4.2")))
+#else
+# define ATTR_CRC32
+#endif
+
 /*
  * MSVC/icc don't have __builtin_ia32_crc32_* functions. Instead they have
  * the _mm_crc32_* intrinsics, which accomplish the same at the end of the day
@@ -203,7 +209,7 @@ void crc32c_init_hw_adler( void )
 #endif
 
 /* Compute CRC-32C using the Intel hardware instruction. */
-uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, unsigned long len)
+ATTR_CRC32 uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, unsigned long len)
 {
         const unsigned char *next = buf;
         const unsigned char *end;
