@@ -16,6 +16,10 @@
 
 #if defined(IS_ARM) && (defined(__linux__) || defined(linux))
 
+#if defined(__GNUC__)
+# pragma GCC target ("+crc+crypto")
+#endif
+
 #include <stddef.h>
 #include <stdint.h>
 
