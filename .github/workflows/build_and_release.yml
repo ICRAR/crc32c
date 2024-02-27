@@ -21,7 +21,7 @@ jobs:
             arch: aarch64
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - uses: docker/setup-qemu-action@v3
         if: ${{ matrix.arch == 'aarch64' }}
@@ -43,7 +43,7 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         name: Install Python
