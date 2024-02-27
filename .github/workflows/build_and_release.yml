@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-qemu-action@v3
         if: ${{ matrix.arch == 'aarch64' }}
         name: Set up QEMU
       - name: Run cibuildwheel
