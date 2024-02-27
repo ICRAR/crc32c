@@ -1,7 +1,12 @@
 name: Build and release to PyPI
 
 # Build on every branch push, tag push, and pull request change:
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+  # 00:00 UTC every Saturday, don't bother anyone
+  - cron: '0 0 * * 6'
 
 jobs:
   build_wheels:
