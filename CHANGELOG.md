@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4]
+
+* Changed package compilation under gcc/clang
+  to use compiler extensions to build hardware-specific functions
+  instead of command-line options
+  for improved portability (#31).
+
 ## [2.3.post0]
 
 * Mention explicit support for Python 3.11.
@@ -140,3 +147,4 @@
 [2.2.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.2.post0
 [2.3]: https://github.com/ICRAR/crc32c/releases/tag/v2.3
 [2.3.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.3.post0
+[2.4]: https://github.com/ICRAR/crc32c/releases/tag/v2.4
