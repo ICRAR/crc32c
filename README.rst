@@ -21,6 +21,10 @@ and Windows using the Visual Studio compiler. Other compilers in
 Windows (MinGW for instance) might work.
 Binary wheels are also provided in PyPI for major platforms/architectures.
 
+The project is using certain gcc/clang compiler extensions to support
+building hardware-specific functions that might not be supported
+by older compiler versions.
+
 
 Usage
 -----
