@@ -35,7 +35,7 @@ jobs:
           CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
           CIBW_TEST_SKIP: '*macosx_arm64 *universal2:arm64'
           CIBW_BUILD_VERBOSITY: 1
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
@@ -53,7 +53,7 @@ jobs:
       - name: Build sdist
         run: python setup.py sdist
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
 
