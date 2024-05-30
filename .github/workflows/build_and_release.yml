@@ -35,8 +35,9 @@ jobs:
           CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
           CIBW_TEST_SKIP: '*macosx_arm64 *universal2:arm64'
           CIBW_BUILD_VERBOSITY: 1
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: wheels-${{ matrix.os }}-${{ matrix.arch }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
@@ -53,19 +54,30 @@ jobs:
       - name: Build sdist
         run: python setup.py sdist
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
+          name: source-dist
           path: dist/*.tar.gz
 
-  upload_pypi:
+  merge_artifacts:
     needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: all-artifacts
+
+
+  upload_pypi:
+    needs: [merge_artifacts]
     runs-on: ubuntu-22.04
     # upload to PyPI on every tag starting with 'v'
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          name: all-artifacts
           path: dist
 
       - uses: pypa/gh-action-pypi-publish@master
