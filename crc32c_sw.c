@@ -490,7 +490,7 @@ const uint32_t crc_tableil8_o88[256] =
 
 uint32_t _crc32c_sw_slicing_by_8(uint32_t crc, unsigned const char* data, unsigned long length)
 {
-	const char* p_buf = (const char*) data;
+	unsigned const char* p_buf = data;
 	size_t initial_bytes = (sizeof(uint32_t) - (intptr_t)p_buf) & (sizeof(uint32_t) - 1);
 	size_t li;
 	size_t running_length;
