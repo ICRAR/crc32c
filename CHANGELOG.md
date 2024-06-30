@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1]
+
+* Fixed failure on big-endian, signed ``char`` platforms
+  (found in SPARC, but there might be more)
+  due to an incorrect (and unnecessary) cast
+  from ``unsigned char *`` to ``char *`` (#43).
+
 ## [2.4]
 
 * Changed package compilation under gcc/clang
@@ -148,3 +155,4 @@
 [2.3]: https://github.com/ICRAR/crc32c/releases/tag/v2.3
 [2.3.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.3.post0
 [2.4]: https://github.com/ICRAR/crc32c/releases/tag/v2.4
+[2.4.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.4.1
