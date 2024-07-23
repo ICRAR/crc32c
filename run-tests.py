@@ -26,7 +26,7 @@ def run_tests(crc32c_sw_mode):
              "print('Is hardware based? ', crc32c.hardware_based);")
         ]
     )
-    run([sys.executable, "-mpytest", os.path.join(SCRIPT_DIR, "test")])
+    run([sys.executable, "-m", "pytest", "-v", os.path.join(SCRIPT_DIR, "test")])
     run(
         [
             sys.executable,
