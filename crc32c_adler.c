@@ -232,6 +232,7 @@ ATTR_CRC32 uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, uns
                 switch ( align / 2 ) {
                 case 3:
                         crc32bit = __builtin_ia32_crc32hi ( crc32bit, * ( uint16_t* ) ( next - 6 ) ); // 6 char, remain 4
+                        CRC32C_FALLTHROUGH;
                 case 2:
                         crc32bit = __builtin_ia32_crc32si ( crc32bit, * ( uint32_t* ) ( next - 4 ) ); // 4 char, remain 0
                         break;
@@ -298,34 +299,49 @@ ATTR_CRC32 uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, uns
                 case 0:
                         do {
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 15:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 14:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 13:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 12:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 11:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 10:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 9:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 8:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 7:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 6:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 5:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 4:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 3:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 2:
                                 CRCsinglet ( crc0, next );
+                                CRC32C_FALLTHROUGH;
                         case 1:
                                 CRCsinglet ( crc0, next );
                         } while ( --n > 0 );
@@ -339,6 +355,7 @@ ATTR_CRC32 uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, uns
         switch ( len / 2 ) {
         case 3:
                 crc32bit = __builtin_ia32_crc32hi ( crc32bit, * ( uint16_t* ) ( next - 6 ) ); // 2 char, remain 4
+                CRC32C_FALLTHROUGH;
         case 2:
                 crc32bit = __builtin_ia32_crc32si ( crc32bit, * ( uint32_t* ) ( next - 4 ) ); // 4 char, remain 0
                 break;

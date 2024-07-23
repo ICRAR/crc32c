@@ -1,5 +1,11 @@
 # Changelog
 
+## Development
+
+* Adding explicit fallthrough annotations
+  in several ``switch`` C statements
+  for clarity, and to avoid potential warnings (#46).
+
 ## [2.4.1]
 
 * Fixed failure on big-endian, signed ``char`` platforms
