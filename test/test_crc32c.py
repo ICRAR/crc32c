@@ -108,9 +108,12 @@ b"sane intellego. Sed ille, ut dixi, vitiose. Dic in quovis conventu te omnia fa
 b"vitam sapientia. Quis suae urbis conservatorem Codrum, quis Erechthei filias non maxime laudat? Primum divisit ineleganter; Huic mori optimum esse "
 b"propter desperationem sapientiae, illi propter spem vivere."), 0xfcb7575a)
 
+
 class Crc32cChecks(object):
+
     def test_all(self):
         self.assertEqual(self.checksum, crc32c.crc32c(self.val))
+
     def test_piece_by_piece(self):
         c = 0
         for x in as_individual_bytes(self.val):
