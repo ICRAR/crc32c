@@ -237,6 +237,7 @@ ATTR_CRC32 uint32_t _crc32c_hw_adler(uint32_t crc, const unsigned char *buf, uns
                         break;
                 case 1:
                         crc32bit = __builtin_ia32_crc32hi ( crc32bit, * ( uint16_t* ) ( next - 2 ) ); // 2 char, remain 0
+                        break;
                 case 0:
                         break;
                 }
