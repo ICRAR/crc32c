@@ -39,6 +39,21 @@
 # define CRC32C_INLINE inline
 #endif
 
+/* switch case fallthrough annotation support */
+#if defined(__STDC_VERSION__) && defined(__has_c_attribute)
+# if __has_c_attribute(fallthrough) && __STDC_VERSION__ >= __has_c_attribute(fallthrough)
+#   define CRC32C_FALLTHROUGH [[fallthrough]]
+# endif
+#endif
+#if !defined(CRC32C_FALLTHROUGH) && defined(__has_attribute)
+# if __has_attribute(__fallthrough__)
+#   define CRC32C_FALLTHROUGH __attribute__((__fallthrough__))
+# endif
+#endif
+#if !defined(CRC32C_FALLTHROUGH)
+# define CRC32C_FALLTHROUGH (void)0
+#endif
+
 /* 32/64 bit detection */
 #if defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) ||\
     (defined(_MSC_VER) && defined(_M_AMD64))
