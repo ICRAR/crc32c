@@ -45,6 +45,11 @@ def ushort_as_bytes(x):
 def uchar_as_bytes(c):
     return struct.pack('<B', c)
 
+def batched(x, size):
+    length = len(x)
+    for i in range(0, length, size):
+        yield x[i: min(i + size, length)]
+
 if sys.version_info[0] == 2:
     def as_individual_bytes(x):
         return x
@@ -119,6 +124,21 @@ class Crc32cChecks(object):
         for x in as_individual_bytes(self.val):
             c = crc32c.crc32c(x, c)
         self.assertEqual(self.checksum, c)
+
+    def test_by_different_chunk_lenghts(self):
+        for chunk_size in range(1, 33):
+            c = 0
+            for chunk in batched(self.val, chunk_size):
+                c = crc32c.crc32c(bytes(chunk), c)
+            self.assertEqual(self.checksum, c)
+
+    def test_by_different_memory_offsets(self):
+        for offset in range(16):
+            val = memoryview(self.val)
+            c = crc32c.crc32c(val[0:offset])
+            c = crc32c.crc32c(val[offset:], c)
+            self.assertEqual(self.checksum, c, "Invalid checksum when splitting at offset %d" % offset)
+
 
 # Generate the actual unittest classes for each of the testing values
 if crc32c is not None:
