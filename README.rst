@@ -29,9 +29,9 @@ by older compiler versions.
 Usage
 -----
 
-The only method exposed by this module is ``crc32c(data, [crc])``.
+The only method exposed by this module is ``crc32c(data, value=0, gil_release_mode=-1)``.
 It computes the CRC32C checksum of ``data``
-starting with an initial ``crc`` checksum,
+starting with an initial ``value`` checksum,
 similarly to how the built-in ``binascii.crc32`` works.
 It can thus be used like this:
 
@@ -40,13 +40,21 @@ It can thus be used like this:
   print(crc32c.crc32c(b'hello world'))
   # 3381945770
   crc = crc32c.crc32c(b'hello')
-  print(crc32c.crc32c(b' world', crc))
+  print(crc32c.crc32c(b' world', value=crc))
   # 3381945770
 
 In older versions,
 the function exposed by this module was called ``crc32``.
 That name is still present but deprecated,
 and will be removed in new versions of the library.
+
+The ``gil_release_mode`` keyword argument
+specifies whether a call of this library shall release or keep the Global Interpreter Lock.
+It can be set to the following values:
+
+* Negative: Only release the GIL when ``data`` >= 32KiB
+* 0: Never release the GIL
+* Positive: Always release the GIL
 
 Additionally one can consult
 the following module-level values:
