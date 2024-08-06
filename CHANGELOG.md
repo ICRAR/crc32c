@@ -4,6 +4,8 @@
 
 * Release GIL during the computation of the CRC32C hash. A new `gil_release_mode` argument lets users choose between always/never/automatically releasing it (#47).
 * Add keyword support to `crc32c` function (`crc32c(data, value=0, gil_release_mode=-1)`).
+* Turned ``crc32c`` from a module-only distribution into a package,
+  and moves all sources under `src`.
 * Adding explicit fallthrough annotations
   in several ``switch`` C statements
   for clarity, and to avoid potential warnings (#46).

@@ -135,7 +135,7 @@ static const char *import_error_msg = "\n\n"
 
 /* Support for Python 2/3 */
 #if PY_MAJOR_VERSION >= 3
-static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "crc32c", "crc32c implementation in hardware and software", -1, CRC32CMethods};
+static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "_crc32c", "crc32c implementation in hardware and software", -1, CRC32CMethods};
 	#define MOD_INIT(name) PyMODINIT_FUNC PyInit_##name(void)
 	#define MOD_DEF(m, name, doc, methods) \
 		m = PyModule_Create(&moduledef);
@@ -147,7 +147,7 @@ static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "crc32c", "crc32c 
 	#define MOD_VAL(v)
 #endif
 
-MOD_INIT(crc32c)
+MOD_INIT(_crc32c)
 {
 	PyObject *m;
 	PyObject *hardware_based;
@@ -183,7 +183,7 @@ MOD_INIT(crc32c)
 
 	is_big_endian = (*(const char *)(&n) == 0);
 
-	MOD_DEF(m, "crc32c", "crc32c implementation in hardware and software", CRC32CMethods);
+	MOD_DEF(m, "_crc32c", "crc32c implementation in hardware and software", CRC32CMethods);
 	if (m == NULL) {
 		return MOD_VAL(NULL);
 	}

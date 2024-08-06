@@ -27,12 +27,12 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
 
-crcmod_ext = Extension('crc32c',
+crcmod_ext = Extension('crc32c._crc32c',
                        define_macros=[('NDEBUG', None)],
-                       depends=glob.glob('*.h'),
+                       depends=glob.glob('src/crc32c/ext/*.h'),
                        language='c',
-                       sources=['_crc32c.c', 'checkarm.c', 'checksse42.c', 'crc32c_adler.c', 'crc32c_arm64.c', 'crc32c_sw.c'],
-                       include_dirs=['.'])
+                       sources=glob.glob('src/crc32c/ext/*.c'),
+                       include_dirs=['src/cc32c/ext/'])
 
 classifiers = [
     # There's no more specific classifier for LGPLv2.1+
@@ -68,5 +68,7 @@ setup(name='crc32c',
       long_description=long_description,
       long_description_content_type='text/x-rst',
       classifiers=classifiers,
+      packages=['crc32c'],
+      package_dir={'': 'src'},
       ext_modules=[crcmod_ext],
       test_suite="test")
