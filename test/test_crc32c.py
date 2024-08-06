@@ -80,6 +80,19 @@ class TestMisc(unittest.TestCase):
     def test_zero(self):
         self.assertEqual(0, crc32c.crc32c(b''))
 
+    def test_keyword(self):
+        self.assertEqual(10, crc32c.crc32c(b'', value=10))
+
+    def test_gil_behaviour(self):
+        def _test(data):
+            expected = crc32c.crc32c(data)
+            self.assertEqual(crc32c.crc32c(data, gil_release_mode=-1), expected)
+            self.assertEqual(crc32c.crc32c(data, gil_release_mode=0), expected)
+            self.assertEqual(crc32c.crc32c(data, gil_release_mode=1), expected)
+
+        _test(b'this_doesnt_release_the_gil_by_default')
+        _test(b'this_releases_the_gil_by_default' * 1024 * 1024)
+
     def test_crc32_deprecated(self):
         with warning_catcher() as warns:
             crc32c.crc32(b'')

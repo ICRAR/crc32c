@@ -32,15 +32,28 @@
 #include "common.h"
 #include "crc32c.h"
 
+#define MIN_BUFSIZE_FOR_AUTOMATIC_RELEASE 32 * 1024  /* threshold for GIL release is 32KiB */
+
 /* Set at module loading time */
 static crc_function crc_fn;
 int is_big_endian;
 
+static inline int crc32c_inline(uint32_t crc, unsigned char *bin_data, Py_ssize_t len) {
+	int result;
+	crc ^= 0xffffffff;
+	result = crc_fn(crc, bin_data, len);
+	result ^= 0xffffffff;
+	return result;
+}
+
 static
-PyObject* crc32c_crc32c(PyObject *self, PyObject *args) {
+PyObject* crc32c_crc32c(PyObject *self, PyObject *args, PyObject *kwargs) {
 	Py_buffer pbin;
 	unsigned char *bin_data = NULL;
 	uint32_t crc = 0U, result;
+	int gil_release_mode = -1;
+
+	static char *kwlist[] = {"data", "value", "gil_release_mode", NULL};
 
 	/* In python 3 we accept only bytes-like objects */
 	const char *format =
@@ -49,29 +62,33 @@ PyObject* crc32c_crc32c(PyObject *self, PyObject *args) {
 #else
 	"s*"
 #endif
-	"|I:crc32";
+	"|Ii:crc32";
 
-	if (!PyArg_ParseTuple(args, format, &pbin, &crc) )
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, format, kwlist, &pbin, &crc, &gil_release_mode) )
 		return NULL;
 
 	bin_data = pbin.buf;
-	crc ^= 0xffffffff;
-	result = crc_fn(crc, bin_data, pbin.len);
-	result ^= 0xffffffff;
+	if ((gil_release_mode < 0 && pbin.len >= MIN_BUFSIZE_FOR_AUTOMATIC_RELEASE) || gil_release_mode >= 1) {
+		Py_BEGIN_ALLOW_THREADS
+		result = crc32c_inline(crc, bin_data, pbin.len);
+		Py_END_ALLOW_THREADS
+	} else {
+		result = crc32c_inline(crc, bin_data, pbin.len);
+	}
 
 	PyBuffer_Release(&pbin);
 	return PyLong_FromUnsignedLong(result);
 }
 
 static
-PyObject *crc32c_crc32(PyObject *self, PyObject *args)
+PyObject *crc32c_crc32(PyObject *self, PyObject *args, PyObject *kwargs)
 {
 	if (PyErr_WarnEx(PyExc_DeprecationWarning,
 	                 "crc32c.crc32 will be eventually removed, use crc32c.crc32c instead",
 	                 1) == -1) {
 		return NULL;
 	}
-	return crc32c_crc32c(self, args);
+	return crc32c_crc32c(self, args, kwargs);
 }
 
 /* The different values the SW mode preference can take */
@@ -101,8 +118,8 @@ static enum crc32c_sw_mode get_sw_mode(void)
 }
 
 static PyMethodDef CRC32CMethods[] = {
-	{"crc32",   crc32c_crc32,   METH_VARARGS, "Calculate crc32c incrementally (deprecated)"},
-	{"crc32c",  crc32c_crc32c,  METH_VARARGS, "Calculate crc32c incrementally"},
+	{"crc32",   (PyCFunction)crc32c_crc32,   METH_VARARGS | METH_KEYWORDS, "Calculate crc32c incrementally (deprecated)"},
+	{"crc32c",  (PyCFunction)crc32c_crc32c,  METH_VARARGS | METH_KEYWORDS, "Calculate crc32c incrementally"},
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
