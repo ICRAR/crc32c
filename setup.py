@@ -67,5 +67,6 @@ setup(name='crc32c',
       classifiers=classifiers,
       packages=['crc32c'],
       package_dir={'': 'src'},
+      include_package_data=True,
       ext_modules=[crcmod_ext],
       test_suite="test")
