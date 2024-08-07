@@ -20,11 +20,8 @@
 #    MA 02111-1307  USA
 #
 import glob
-import sysconfig
 
-import distutils.ccompiler
 from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext
 
 
 crcmod_ext = Extension('crc32c._crc32c',
