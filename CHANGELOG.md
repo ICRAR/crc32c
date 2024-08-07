@@ -12,6 +12,7 @@
   for clarity, and to avoid potential warnings (#46).
 * Run test against different memory alignments.
 * Mention explicit support for Python 3.13.
+* Drop support for Python 2.7.
 
 ## [2.4.1]
 

@@ -56,13 +56,7 @@ PyObject* crc32c_crc32c(PyObject *self, PyObject *args, PyObject *kwargs) {
 	static char *kwlist[] = {"data", "value", "gil_release_mode", NULL};
 
 	/* In python 3 we accept only bytes-like objects */
-	const char *format =
-#if PY_MAJOR_VERSION >= 3
-	"y*"
-#else
-	"s*"
-#endif
-	"|Ii:crc32";
+	const char *format ="y*|Ii:crc32";
 
 	if (!PyArg_ParseTupleAndKeywords(args, kwargs, format, kwlist, &pbin, &crc, &gil_release_mode) )
 		return NULL;
@@ -133,21 +127,9 @@ static const char *import_error_msg = "\n\n"
 " * 'force': use software implementation regardless of hardware support.\n"
 " * 'none': fail if no hardware support is found (this error).\n";
 
-/* Support for Python 2/3 */
-#if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "_crc32c", "crc32c implementation in hardware and software", -1, CRC32CMethods};
-	#define MOD_INIT(name) PyMODINIT_FUNC PyInit_##name(void)
-	#define MOD_DEF(m, name, doc, methods) \
-		m = PyModule_Create(&moduledef);
-	#define MOD_VAL(v) v
-#else
-	#define MOD_INIT(name) PyMODINIT_FUNC init##name(void)
-	#define MOD_DEF(m, name, doc, methods) \
-		m = Py_InitModule3(name, methods, doc);
-	#define MOD_VAL(v)
-#endif
 
-MOD_INIT(_crc32c)
+PyMODINIT_FUNC PyInit__crc32c(void)
 {
 	PyObject *m;
 	PyObject *hardware_based;
@@ -178,21 +160,21 @@ MOD_INIT(_crc32c)
 	}
 	else if (sw_mode == NONE) {
 		PyErr_SetString(PyExc_ImportError, import_error_msg);
-		return MOD_VAL(NULL);
+		return NULL;
 	}
 
 	is_big_endian = (*(const char *)(&n) == 0);
 
-	MOD_DEF(m, "_crc32c", "crc32c implementation in hardware and software", CRC32CMethods);
+	m = PyModule_Create(&moduledef);
 	if (m == NULL) {
-		return MOD_VAL(NULL);
+		return NULL;
 	}
 	Py_INCREF(hardware_based);
 	if (PyModule_AddObject(m, "hardware_based", hardware_based) < 0) {
-		return MOD_VAL(NULL);
+		return NULL;
 	}
 	if (PyModule_AddIntConstant(m, "big_endian", is_big_endian) < 0) {
-		return MOD_VAL(NULL);
+		return NULL;
 	}
-	return MOD_VAL(m);
+	return m;
 }
