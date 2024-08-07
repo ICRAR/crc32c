@@ -2,6 +2,8 @@
 
 ## Development
 
+## [2.5]
+
 * Made this package PEP 561 compliant (#49).
 * Release GIL during the computation of the CRC32C hash. A new `gil_release_mode` argument lets users choose between always/never/automatically releasing it (#47).
 * Add keyword support to `crc32c` function (`crc32c(data, value=0, gil_release_mode=-1)`).
@@ -170,3 +172,4 @@
 [2.3.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.3.post0
 [2.4]: https://github.com/ICRAR/crc32c/releases/tag/v2.4
 [2.4.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.4.1
+[2.5]: https://github.com/ICRAR/crc32c/releases/tag/v2.5
