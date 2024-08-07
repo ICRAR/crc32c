@@ -1,0 +1,26 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+  schedule:
+  # 00:00 UTC every Saturday, don't bother anyone
+  - cron: '0 0 * * 6'
+
+jobs:
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.8
+          architecture: x64
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install mypy & wheel
+        run: pip install mypy wheel
+      - name: Install package
+        run: python setup.py bdist_wheel && pip install dist/crc32c*.whl
+      - name: Run mypy
+        run: mypy --strict test/test_crc32c.py
