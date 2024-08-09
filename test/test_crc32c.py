@@ -25,7 +25,7 @@ import struct
 import unittest
 import warnings
 
-from typing import Any, Generator
+from typing import Any, Generator, NamedTuple
 
 try:
     import crc32c
@@ -106,17 +106,29 @@ class TestMisc(unittest.TestCase):
         assert_msvc_vals(ulonglong_as_bytes(0x88889999EEEE3333), 0x5555AAAA, 0x16F57621)
 
 
-numbers1 = ('Numbers1', b'123456789', 0xe3069283)
-numbers2 = ('Numbers2', b'23456789', 0xBFE92A83)
-numbers3 = ('Numbers3', b'1234567890', 0xf3dbd4fe)
-phrase = ('Phrase', b'The quick brown fox jumps over the lazy dog', 0x22620404)
-long_phrase = ('LongPhrase', (b"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc omni virtuti vitium contrario nomine opponitur. "
-b"Conferam tecum, quam cuique verso rem subicias; Te ipsum, dignissimum maioribus tuis, voluptasne induxit, ut adolescentulus eriperes "
-b"P. Conclusum est enim contra Cyrenaicos satis acute, nihil ad Epicurum. Duo Reges: constructio interrete. Tum Torquatus: Prorsus, inquit, assentior;\n"
-b"Quando enim Socrates, qui parens philosophiae iure dici potest, quicquam tale fecit? Sed quid sentiat, non videtis. Haec quo modo conveniant, non "
-b"sane intellego. Sed ille, ut dixi, vitiose. Dic in quovis conventu te omnia facere, ne doleas. Quod si ita se habeat, non possit beatam praestare "
-b"vitam sapientia. Quis suae urbis conservatorem Codrum, quis Erechthei filias non maxime laudat? Primum divisit ineleganter; Huic mori optimum esse "
-b"propter desperationem sapientiae, illi propter spem vivere."), 0xfcb7575a)
+class CRCTestValue(NamedTuple):
+    name: str
+    data: bytes
+    crc: int
+
+
+test_values: List[CRCTestValue] = [
+    CRCTestValue("Numbers1", b"123456789", 0xE3069283),
+    CRCTestValue("Numbers2", b"23456789", 0xBFE92A83),
+    CRCTestValue("Phrase", b"The quick brown fox jumps over the lazy dog", 0x22620404),
+    CRCTestValue(
+        "LongPhrase",
+        b"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc omni virtuti vitium contrario nomine opponitur. "
+        b"Conferam tecum, quam cuique verso rem subicias; Te ipsum, dignissimum maioribus tuis, voluptasne induxit, ut adolescentulus eriperes "
+        b"P. Conclusum est enim contra Cyrenaicos satis acute, nihil ad Epicurum. Duo Reges: constructio interrete. Tum Torquatus: Prorsus, inquit, assentior;\n"
+        b"Quando enim Socrates, qui parens philosophiae iure dici potest, quicquam tale fecit? Sed quid sentiat, non videtis. Haec quo modo conveniant, non "
+        b"sane intellego. Sed ille, ut dixi, vitiose. Dic in quovis conventu te omnia facere, ne doleas. Quod si ita se habeat, non possit beatam praestare "
+        b"vitam sapientia. Quis suae urbis conservatorem Codrum, quis Erechthei filias non maxime laudat? Primum divisit ineleganter; Huic mori optimum esse "
+        b"propter desperationem sapientiae, illi propter spem vivere.",
+        0xFCB7575A,
+    ),
+    CRCTestValue("Empty", b"", 0x0),
+]
 
 
 class Crc32cChecks(object):
@@ -151,6 +163,10 @@ class Crc32cChecks(object):
 
 # Generate the actual unittest classes for each of the testing values
 if crc32c is not None:
-    for name, val, checksum in (numbers1, numbers2, numbers3, phrase, long_phrase):
-        classname = 'Test%s' % name
-        locals()[classname] = type(classname, (unittest.TestCase, Crc32cChecks), {'val': val, 'checksum': checksum})
+    for value in test_values:
+        classname = "Test%s" % value.name
+        locals()[classname] = type(
+            classname,
+            (unittest.TestCase, Crc32cChecks),
+            {"val": value.data, "checksum": value.crc},
+        )
