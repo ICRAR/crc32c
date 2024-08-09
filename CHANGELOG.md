@@ -2,6 +2,8 @@
 
 ## Development
 
+* Drop support for Python < 3.7.
+
 ## [2.5]
 
 * Made this package PEP 561 compliant (#49).
