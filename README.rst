@@ -29,7 +29,7 @@ by older compiler versions.
 Usage
 -----
 
-The only method exposed by this module is ``crc32c(data, value=0, gil_release_mode=-1)``.
+The core function exposed by this module is ``crc32c(data, value=0, gil_release_mode=-1)``.
 It computes the CRC32C checksum of ``data``
 starting with an initial ``value`` checksum,
 similarly to how the built-in ``binascii.crc32`` works.
@@ -55,6 +55,22 @@ It can be set to the following values:
 * Negative: Only release the GIL when ``data`` >= 32KiB
 * 0: Never release the GIL
 * Positive: Always release the GIL
+
+On top of the ``crc32c`` function,
+a ``CRC32CHash`` class is also offered.
+It is modelled after the "hash objects" of the ``hashlib`` module
+of the standard library:
+
+.. code-block:: python
+
+   crc32c_hash = crc32c.CRC32CHash()
+   crc32c_hash.update(b'hello')
+   crc32c_hash.update(b' world')
+   print(crc32c_hash.digest())
+   # b'\xc9\x94e\xaa'
+
+For more details see
+the documentation on `hash objects <https://docs.python.org/3/library/hashlib.html#hash-objects>`_.
 
 Additionally one can consult
 the following module-level values:

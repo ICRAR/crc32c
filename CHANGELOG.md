@@ -2,6 +2,8 @@
 
 ## Development
 
+* Added new `crc32c.CRC32CHash` class
+  modelled after the stdlib `hashlib` hash objects.
 * Drop support for Python < 3.7.
 
 ## [2.5]

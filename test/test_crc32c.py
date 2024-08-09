@@ -24,8 +24,9 @@ import os
 import struct
 import unittest
 import warnings
+from typing import Any, Generator, NamedTuple, List
 
-from typing import Any, Generator, NamedTuple
+import pytest
 
 try:
     import crc32c
@@ -130,6 +131,54 @@ test_values: List[CRCTestValue] = [
     ),
     CRCTestValue("Empty", b"", 0x0),
 ]
+
+
+@pytest.mark.skipif(crc32c is None, reason="no crc32c support in this platform")
+class TestCRC32CHash:
+    def test_misc(self) -> None:
+        crc32c_hash = crc32c.CRC32CHash(b"")
+
+        assert crc32c_hash.digest_size == 4
+        assert crc32c_hash.name == "crc32c"
+        assert len(crc32c_hash.digest()) == crc32c_hash.digest_size
+        assert len(crc32c_hash.hexdigest()) == crc32c_hash.digest_size * 2
+
+    def test_copy(self) -> None:
+        crc32c_hash = crc32c.CRC32CHash(b"")
+        crc32c_hash_copy = crc32c_hash.copy()
+
+        assert crc32c_hash.digest() == crc32c_hash_copy.digest()
+        assert crc32c_hash.hexdigest() == crc32c_hash_copy.hexdigest()
+        assert id(crc32c_hash) != id(crc32c_hash_copy)
+
+        crc32c_hash.update(b"1")
+        assert crc32c_hash.digest() != crc32c_hash_copy.digest()
+        assert crc32c_hash.hexdigest() != crc32c_hash_copy.hexdigest()
+
+        crc32c_hash_copy.update(b"2")
+        assert crc32c_hash.digest() != crc32c_hash_copy.digest()
+        assert crc32c_hash.hexdigest() != crc32c_hash_copy.hexdigest()
+
+    @pytest.mark.parametrize(
+        "data,crc",
+        [(value.data, value.crc) for value in test_values],
+    )
+    class TestSpecificValues:
+        @staticmethod
+        def _check_values(crc32c_hash: crc32c.CRC32CHash, crc: int) -> None:
+            assert int.from_bytes(crc32c_hash.digest(), "big") == crc
+            assert len(crc32c_hash.digest()) == 4
+            assert int(crc32c_hash.hexdigest(), 16) == crc
+            assert len(crc32c_hash.hexdigest()) == 8
+
+        def test_piece_by_piece(self, data: bytes, crc: int) -> None:
+            crc32c_hash = crc32c.CRC32CHash(b"")
+            for x in as_individual_bytes(data):
+                crc32c_hash.update(x)
+            self._check_values(crc32c_hash, crc)
+
+        def test_all(self, data: bytes, crc: int) -> None:
+            self._check_values(crc32c.CRC32CHash(data), crc)
 
 
 class Crc32cChecks(object):

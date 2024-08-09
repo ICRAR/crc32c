@@ -1,4 +1,5 @@
 # Keep alphasorted
 black
 mypy
+pytest
 wheel
