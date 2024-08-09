@@ -2,6 +2,8 @@
 
 ## Development
 
+## [2.6]
+
 * Added new `crc32c.CRC32CHash` class
   modelled after the stdlib `hashlib` hash objects.
 * Drop support for Python < 3.7.
@@ -177,3 +179,4 @@
 [2.4]: https://github.com/ICRAR/crc32c/releases/tag/v2.4
 [2.4.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.4.1
 [2.5]: https://github.com/ICRAR/crc32c/releases/tag/v2.5
+[2.6]: https://github.com/ICRAR/crc32c/releases/tag/v2.6
