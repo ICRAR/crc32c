@@ -58,6 +58,14 @@ PyObject* crc32c_crc32c(PyObject *self, PyObject *args, PyObject *kwargs) {
 	/* In python 3 we accept only bytes-like objects */
 	const char *format ="y*|Ii:crc32";
 
+	if (!crc_fn) {
+		PyErr_SetString(
+		    PyExc_RuntimeError,
+		    "crc32c: software mode disabled and no hardware acceleration found, can't calculate checksum"
+		);
+		return NULL;
+	}
+
 	if (!PyArg_ParseTupleAndKeywords(args, kwargs, format, kwlist, &pbin, &crc, &gil_release_mode) )
 		return NULL;
 
@@ -128,15 +136,16 @@ static PyMethodDef CRC32CMethods[] = {
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
-static const char *import_error_msg = "\n\n"
+static const char *no_hw_or_sw_error_msg = "\n\n"
 "Hardware extensions providing a crc32c hardware instruction are not available in\n"
 "your processor. This package comes with a software implementation, but this\n"
 "support has been opted out because the CRC32C_SW_MODE environment variable is\n"
-"set to \"none\". CRC32C_SW_MODE can take one of the following values:\n"
+"set to \"none\", and therefore any checksum calculation will result in a\n"
+"RuntimeError. CRC32C_SW_MODE can take one of the following values:\n"
 " * If unset: use the software implementation if no hardware support is found\n"
 " * 'auto': as above, but will eventually be discontinued\n"
 " * 'force': use software implementation regardless of hardware support.\n"
-" * 'none': fail if no hardware support is found (this error).\n";
+" * 'none': fail if no hardware support is found.\n";
 
 static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "_crc32c", "crc32c implementation in hardware and software", -1, CRC32CMethods};
 
@@ -176,8 +185,12 @@ PyMODINIT_FUNC PyInit__crc32c(void)
 		hardware_based = Py_False;
 	}
 	else if (sw_mode == NONE) {
-		PyErr_SetString(PyExc_ImportError, import_error_msg);
-		return NULL;
+		if (PyErr_WarnEx(PyExc_RuntimeWarning,
+		                 no_hw_or_sw_error_msg,
+		                 1) == -1) {
+			return NULL;
+		}
+		hardware_based = Py_False;
 	}
 
 	is_big_endian = (*(const char *)(&n) == 0);

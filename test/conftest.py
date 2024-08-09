@@ -24,19 +24,37 @@ import time
 
 import pytest
 
-try:
-    import crc32c
-except:
-    crc32c = None  # type: ignore[assignment]
+import crc32c
+
+
+def _crc32c_is_available() -> bool:
+    try:
+        crc32c.crc32c(b"dummy")
+        return True
+    except RuntimeError:
+        return False
+
+
+@pytest.fixture
+def crc32c_is_available() -> bool:
+    return _crc32c_is_available()
+
+
+@pytest.fixture(autouse=True)
+def skip_if_crc32c_unavailable(
+    request: pytest.FixtureRequest, crc32c_is_available: bool
+) -> None:
+    if request.node.get_closest_marker("calculates_crc32c") and not crc32c_is_available:
+        pytest.skip("crc32c is not available on this platform")
 
 
 def pytest_sessionstart(session: pytest.Session) -> None:
-    if not crc32c:
-        print("crc32c module not imported, can't show general diagnostics")
-        return
-
     print("crc32c is big endian? ", crc32c.big_endian)
     print("crc32c is hardware based? ", crc32c.hardware_based)
+
+    if not _crc32c_is_available():
+        print("crc32c can't run, no performance diagnostic issued")
+        return
 
     # We run 1GB in total
     data = b" " * int(1e8)

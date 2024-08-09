@@ -5,6 +5,12 @@
 * Added a `gil_relese_mode` parameter to the `CRC32CHash` constructor
   used by all underlying `crc32c` function calls (#51).
 * Added `CRC32CHash.checksum` auxiliary property.
+* The ``crc32c`` module doesn't fail to import when ``CRC32C_SW_MODE`` is ``none``
+  and no hardware acceleration is found,
+  making the act of importing the module less ackward.
+  Now a ``RuntimeWarning`` is issued at import time instead,
+  and a``RuntimeError`` is raised any time
+  a checksum calculation is attempted.
 * Skip hardware probing if the `CRC32C_SKIP_HW_PROBE` environment variable
   is set to `1`.
 

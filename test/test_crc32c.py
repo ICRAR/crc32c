@@ -29,16 +29,16 @@ from typing import Any, Generator, NamedTuple, List
 
 import pytest
 
-try:
-    import crc32c
+import crc32c
 
+
+def test_software_mode(crc32c_is_available: bool) -> None:
+    """Check that the CRC32C_SW_MODE has intended consequences"""
     sw_mode = os.environ.get("CRC32C_SW_MODE")
-    if sw_mode == "none" and not crc32c.hardware_based:
-        raise RuntimeError('"none" should force hardware support')
-    elif sw_mode == "force" and crc32c.hardware_based:
-        raise RuntimeError('"force" should force software support')
-except ImportError:
-    crc32c = None  # type: ignore[assignment]
+    if sw_mode == "force":
+        assert not crc32c.hardware_based
+    if sw_mode == "none" and crc32c_is_available:
+        assert crc32c.hardware_based
 
 
 def ulonglong_as_bytes(x: int) -> bytes:
@@ -68,7 +68,7 @@ def as_individual_bytes(x: bytes) -> Generator[bytes, None, None]:
         yield bytes([b])
 
 
-@pytest.mark.skipif(crc32c is None, reason="no crc32c support in this platform")
+@pytest.mark.calculates_crc32c
 class TestMisc:
 
     def test_zero(self) -> None:
@@ -134,7 +134,7 @@ test_values: List[CRCTestValue] = [
 ]
 
 
-@pytest.mark.skipif(crc32c is None, reason="no crc32c support in this platform")
+@pytest.mark.calculates_crc32c
 class TestCRC32CHash:
     def test_misc(self) -> None:
         crc32c_hash = crc32c.CRC32CHash()
@@ -192,6 +192,7 @@ class TestCRC32CHash:
             self._check_values(crc32c.CRC32CHash(data), crc)
 
 
+@pytest.mark.calculates_crc32c
 class Crc32cChecks:
     checksum: int
     val: bytes
@@ -223,11 +224,10 @@ class Crc32cChecks:
 
 
 # Generate the actual test classes for each of the testing values
-if crc32c is not None:
-    for value in test_values:
-        classname = "Test%s" % value.name
-        locals()[classname] = type(
-            classname,
-            (Crc32cChecks,),
-            {"val": value.data, "checksum": value.crc},
-        )
+for value in test_values:
+    classname = "Test%s" % value.name
+    locals()[classname] = type(
+        classname,
+        (Crc32cChecks,),
+        {"val": value.data, "checksum": value.crc},
+    )
