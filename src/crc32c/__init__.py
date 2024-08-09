@@ -1,1 +1,5 @@
-from ._crc32c import big_endian, crc32, crc32c, hardware_based
+# Explicitly "import ... as" to make mypy --strict happy
+from ._crc32c import big_endian as big_endian
+from ._crc32c import crc32 as crc32
+from ._crc32c import crc32c as crc32c
+from ._crc32c import hardware_based as hardware_based

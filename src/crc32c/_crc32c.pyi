@@ -1,4 +1,4 @@
-from collections.abc import Buffer
+from typing_extensions import Buffer
 
 big_endian: int
 hardware_based: bool
