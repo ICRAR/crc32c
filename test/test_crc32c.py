@@ -29,35 +29,36 @@ from typing import Any, Generator, NamedTuple
 
 try:
     import crc32c
-    sw_mode = os.environ.get('CRC32C_SW_MODE')
-    if sw_mode == 'none' and not crc32c.hardware_based:
+
+    sw_mode = os.environ.get("CRC32C_SW_MODE")
+    if sw_mode == "none" and not crc32c.hardware_based:
         raise RuntimeError('"none" should force hardware support')
-    elif sw_mode == 'force' and crc32c.hardware_based:
+    elif sw_mode == "force" and crc32c.hardware_based:
         raise RuntimeError('"force" should force software support')
 except ImportError:
     crc32c = None  # type: ignore[assignment]
 
 
 def ulonglong_as_bytes(x: int) -> bytes:
-    return struct.pack('<Q', x)
+    return struct.pack("<Q", x)
 
 
 def uint_as_bytes(x: int) -> bytes:
-    return struct.pack('<I', x)
+    return struct.pack("<I", x)
 
 
 def ushort_as_bytes(x: int) -> bytes:
-    return struct.pack('<H', x)
+    return struct.pack("<H", x)
 
 
 def uchar_as_bytes(c: int) -> bytes:
-    return struct.pack('<B', c)
+    return struct.pack("<B", c)
 
 
 def batched(x: bytes, size: int) -> Generator[bytes, None, None]:
     length = len(x)
     for i in range(0, length, size):
-        yield x[i: min(i + size, length)]
+        yield x[i : min(i + size, length)]
 
 
 def as_individual_bytes(x: bytes) -> Generator[bytes, None, None]:
@@ -65,14 +66,14 @@ def as_individual_bytes(x: bytes) -> Generator[bytes, None, None]:
         yield bytes([b])
 
 
-@unittest.skipIf(crc32c is None, 'no crc32c support in this platform')
+@unittest.skipIf(crc32c is None, "no crc32c support in this platform")
 class TestMisc(unittest.TestCase):
 
     def test_zero(self) -> None:
-        self.assertEqual(0, crc32c.crc32c(b''))
+        self.assertEqual(0, crc32c.crc32c(b""))
 
     def test_keyword(self) -> None:
-        self.assertEqual(10, crc32c.crc32c(b'', value=10))
+        self.assertEqual(10, crc32c.crc32c(b"", value=10))
 
     def test_gil_behaviour(self) -> None:
         def _test(data: bytes) -> None:
@@ -81,21 +82,21 @@ class TestMisc(unittest.TestCase):
             self.assertEqual(crc32c.crc32c(data, gil_release_mode=0), expected)
             self.assertEqual(crc32c.crc32c(data, gil_release_mode=1), expected)
 
-        _test(b'this_doesnt_release_the_gil_by_default')
-        _test(b'this_releases_the_gil_by_default' * 1024 * 1024)
+        _test(b"this_doesnt_release_the_gil_by_default")
+        _test(b"this_releases_the_gil_by_default" * 1024 * 1024)
 
     def test_crc32_deprecated(self) -> None:
         with warnings.catch_warnings(record=True) as warns:
-            crc32c.crc32(b'')
+            crc32c.crc32(b"")
         self.assertEqual(len(warns), 1)
         with warnings.catch_warnings(record=True) as warns:
-            crc32c.crc32c(b'')
+            crc32c.crc32c(b"")
         self.assertEqual(len(warns), 0)
 
     def test_msvc_examples(self) -> None:
         # Examples taken from MSVC's online examples.
         # Values are not xor'd in the examples though, so we do it here
-        max32 = 0xffffffff
+        max32 = 0xFFFFFFFF
 
         def assert_msvc_vals(b: bytes, crc: int, expected_crc: int) -> None:
             self.assertEqual(expected_crc ^ max32, crc32c.crc32c(b, crc ^ max32))
@@ -158,7 +159,11 @@ class Crc32cChecks(object):
             val = memoryview(self.val)
             c = crc32c.crc32c(val[0:offset])
             c = crc32c.crc32c(val[offset:], c)
-            self.assertEqual(self.checksum, c, "Invalid checksum when splitting at offset %d" % offset)
+            self.assertEqual(
+                self.checksum,
+                c,
+                "Invalid checksum when splitting at offset %d" % offset,
+            )
 
 
 # Generate the actual unittest classes for each of the testing values

@@ -1,3 +1,4 @@
 # Keep alphasorted
+black
 mypy
 wheel
