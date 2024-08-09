@@ -23,6 +23,6 @@ jobs:
       - name: Install package
         run: python setup.py bdist_wheel && pip install dist/crc32c*.whl
       - name: Run mypy
-        run: mypy --strict test/test_crc32c.py
+        run: mypy --strict src test
       - name: Run black
         run: black --check src/ test/
