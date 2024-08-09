@@ -18,8 +18,8 @@ jobs:
           architecture: x64
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install mypy & wheel
-        run: pip install mypy wheel
+      - name: Install dev requirements
+        run: pip install -r requirements-dev.txt
       - name: Install package
         run: python setup.py bdist_wheel && pip install dist/crc32c*.whl
       - name: Run mypy
