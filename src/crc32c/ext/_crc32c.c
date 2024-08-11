@@ -111,6 +111,17 @@ static enum crc32c_sw_mode get_sw_mode(void)
 	return UNSPECIFIED;
 }
 
+#ifdef CRC32C_CAN_PROBE_HW
+static int get_skip_hw_probe(void)
+{
+	char *skip_hw_probe = getenv("CRC32C_SKIP_HW_PROBE");
+	if (skip_hw_probe == NULL) {
+		return 0;
+	}
+	return !strcmp(skip_hw_probe, "1");
+}
+#endif
+
 static PyMethodDef CRC32CMethods[] = {
 	{"crc32",   (PyCFunction)crc32c_crc32,   METH_VARARGS | METH_KEYWORDS, "Calculate crc32c incrementally (deprecated)"},
 	{"crc32c",  (PyCFunction)crc32c_crc32c,  METH_VARARGS | METH_KEYWORDS, "Calculate crc32c incrementally"},
@@ -135,21 +146,27 @@ PyMODINIT_FUNC PyInit__crc32c(void)
 	PyObject *hardware_based;
 	enum crc32c_sw_mode sw_mode;
 	const uint32_t n = 1;
+#ifdef CRC32C_CAN_PROBE_HW
+	int skip_hw_probe;
+#endif
 
 	sw_mode = get_sw_mode();
+#ifdef CRC32C_CAN_PROBE_HW
+	skip_hw_probe = get_skip_hw_probe();
+#endif
 	crc_fn = NULL;
 	if (sw_mode == FORCE) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 		hardware_based = Py_False;
 	}
 #if defined(IS_INTEL)
-	else if (_crc32c_intel_probe()) {
+	else if (!skip_hw_probe && _crc32c_intel_probe()) {
 		crc_fn = _crc32c_hw_adler;
 		crc32c_init_hw_adler();
 		hardware_based = Py_True;
 	}
 #elif defined(IS_ARM) && (defined(__linux__) || defined(linux))
-	else if (_crc32c_arm64_probe()) {
+	else if (!skip_hw_probe && _crc32c_arm64_probe()) {
 		crc_fn = _crc32c_hw_arm64;
 		hardware_based = Py_True;
 	}

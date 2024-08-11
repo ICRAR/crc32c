@@ -5,6 +5,8 @@
 * Added a `gil_relese_mode` parameter to the `CRC32CHash` constructor
   used by all underlying `crc32c` function calls (#51).
 * Added `CRC32CHash.checksum` auxiliary property.
+* Skip hardware probing if the `CRC32C_SKIP_HW_PROBE` environment variable
+  is set to `1`.
 
 ## [2.6]
 

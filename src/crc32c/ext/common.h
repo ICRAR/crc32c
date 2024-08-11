@@ -32,6 +32,10 @@
 # define IS_ARM
 #endif
 
+#if defined(IS_INTEL) || (defined(IS_ARM) && (defined(__linux__) || defined(linux)))
+# define CRC32C_CAN_PROBE_HW
+#endif
+
 /* inline support (it's not a keyword in MSVC for C code) */
 #if defined(_MSC_VER)
 # define CRC32C_INLINE __inline

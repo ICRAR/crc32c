@@ -100,6 +100,10 @@ to one of the following values:
 * ``none``: fail to import the module with an ``ImportError``
   if no hardware support is found (old 1.x default behavior).
 
+Setting the ``CRC32C_SKIP_HW_PROBE`` to ``1``
+simulates platforms without hardware support.
+This is available mostly for internal testing purposes.
+
 The software algorithm is based
 on Intel's `slice-by-8 package <https://sourceforge.net/projects/slicing-by-8/>`_,
 with some adaptations done
