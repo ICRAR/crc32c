@@ -22,7 +22,6 @@
 
 import os
 import struct
-import unittest
 import warnings
 from typing import Any, Generator, NamedTuple, List
 
@@ -67,21 +66,21 @@ def as_individual_bytes(x: bytes) -> Generator[bytes, None, None]:
         yield bytes([b])
 
 
-@unittest.skipIf(crc32c is None, "no crc32c support in this platform")
-class TestMisc(unittest.TestCase):
+@pytest.mark.skipif(crc32c is None, reason="no crc32c support in this platform")
+class TestMisc:
 
     def test_zero(self) -> None:
-        self.assertEqual(0, crc32c.crc32c(b""))
+        assert 0 == crc32c.crc32c(b"")
 
     def test_keyword(self) -> None:
-        self.assertEqual(10, crc32c.crc32c(b"", value=10))
+        assert 10 == crc32c.crc32c(b"", value=10)
 
     def test_gil_behaviour(self) -> None:
         def _test(data: bytes) -> None:
             expected = crc32c.crc32c(data)
-            self.assertEqual(crc32c.crc32c(data, gil_release_mode=-1), expected)
-            self.assertEqual(crc32c.crc32c(data, gil_release_mode=0), expected)
-            self.assertEqual(crc32c.crc32c(data, gil_release_mode=1), expected)
+            assert expected == crc32c.crc32c(data, gil_release_mode=-1)
+            assert expected == crc32c.crc32c(data, gil_release_mode=0)
+            assert expected == crc32c.crc32c(data, gil_release_mode=1)
 
         _test(b"this_doesnt_release_the_gil_by_default")
         _test(b"this_releases_the_gil_by_default" * 1024 * 1024)
@@ -89,10 +88,10 @@ class TestMisc(unittest.TestCase):
     def test_crc32_deprecated(self) -> None:
         with warnings.catch_warnings(record=True) as warns:
             crc32c.crc32(b"")
-        self.assertEqual(len(warns), 1)
+        assert 1 == len(warns)
         with warnings.catch_warnings(record=True) as warns:
             crc32c.crc32c(b"")
-        self.assertEqual(len(warns), 0)
+        assert 0 == len(warns)
 
     def test_msvc_examples(self) -> None:
         # Examples taken from MSVC's online examples.
@@ -100,7 +99,7 @@ class TestMisc(unittest.TestCase):
         max32 = 0xFFFFFFFF
 
         def assert_msvc_vals(b: bytes, crc: int, expected_crc: int) -> None:
-            self.assertEqual(expected_crc ^ max32, crc32c.crc32c(b, crc ^ max32))
+            assert expected_crc ^ max32 == crc32c.crc32c(b, crc ^ max32)
 
         assert_msvc_vals(uchar_as_bytes(100), 1, 1412925310)
         assert_msvc_vals(ushort_as_bytes(1000), 1, 3870914500)
@@ -190,46 +189,42 @@ class TestCRC32CHash:
             self._check_values(crc32c.CRC32CHash(data), crc)
 
 
-class Crc32cChecks(object):
+class Crc32cChecks:
     checksum: int
     val: bytes
 
-    def assertEqual(self, a: Any, b: Any, msg: Any = None) -> None: ...
-
     def test_all(self) -> None:
-        self.assertEqual(self.checksum, crc32c.crc32c(self.val))
+        assert self.checksum == crc32c.crc32c(self.val)
 
     def test_piece_by_piece(self) -> None:
         c = 0
         for x in as_individual_bytes(self.val):
             c = crc32c.crc32c(x, c)
-        self.assertEqual(self.checksum, c)
+        assert self.checksum == c
 
     def test_by_different_chunk_lenghts(self) -> None:
         for chunk_size in range(1, 33):
             c = 0
             for chunk in batched(self.val, chunk_size):
                 c = crc32c.crc32c(bytes(chunk), c)
-            self.assertEqual(self.checksum, c)
+            assert self.checksum == c
 
     def test_by_different_memory_offsets(self) -> None:
         for offset in range(16):
             val = memoryview(self.val)
             c = crc32c.crc32c(val[0:offset])
             c = crc32c.crc32c(val[offset:], c)
-            self.assertEqual(
-                self.checksum,
-                c,
-                "Invalid checksum when splitting at offset %d" % offset,
+            assert self.checksum == c, (
+                "Invalid checksum when splitting at offset %d" % offset
             )
 
 
-# Generate the actual unittest classes for each of the testing values
+# Generate the actual test classes for each of the testing values
 if crc32c is not None:
     for value in test_values:
         classname = "Test%s" % value.name
         locals()[classname] = type(
             classname,
-            (unittest.TestCase, Crc32cChecks),
+            (Crc32cChecks,),
             {"val": value.data, "checksum": value.crc},
         )
