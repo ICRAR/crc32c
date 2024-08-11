@@ -57,7 +57,7 @@ It can be set to the following values:
 * Positive: Always release the GIL
 
 On top of the ``crc32c`` function,
-a ``CRC32CHash`` class is also offered.
+a ``CRC32CHash(data=b"", gil_release_mode=-1)`` class is also offered.
 It is modelled after the "hash objects" of the ``hashlib`` module
 of the standard library:
 

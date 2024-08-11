@@ -2,6 +2,9 @@
 
 ## Development
 
+* Added a `gil_relese_mode` parameter to the `CRC32CHash` constructor
+  used by all underlying `crc32c` function calls (#51).
+
 ## [2.6]
 
 * Added new `crc32c.CRC32CHash` class

@@ -36,11 +36,13 @@ class CRC32CHash:
         """
         return "crc32c"
 
-    def __init__(self, data: Buffer = b"") -> None:
+    def __init__(self, data: Buffer = b"", gil_release_mode: int = -1) -> None:
         """
         Initialise the hash object with an optional bytes-like object.
+        Uses the given GIL release mode on each checksum calculation.
         """
-        self._checksum = crc32c(data)
+        self._checksum = crc32c(data, gil_release_mode=gil_release_mode)
+        self._gil_release_mode = gil_release_mode
 
     def update(self, data: Buffer) -> None:
         """
@@ -48,7 +50,9 @@ class CRC32CHash:
         Repeated calls are equivalent to a single call with the concatenation of all the arguments:
         m.update(a); m.update(b) is equivalent to m.update(a+b).
         """
-        self._checksum = crc32c(data, self._checksum)
+        self._checksum = crc32c(
+            data, self._checksum, gil_release_mode=self._gil_release_mode
+        )
 
     def digest(self) -> bytes:
         """
@@ -72,4 +76,5 @@ class CRC32CHash:
         """
         res = type(self)()
         res._checksum = self._checksum
+        res._gil_release_mode = self._gil_release_mode
         return res
