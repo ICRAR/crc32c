@@ -136,15 +136,24 @@ test_values: List[CRCTestValue] = [
 @pytest.mark.skipif(crc32c is None, reason="no crc32c support in this platform")
 class TestCRC32CHash:
     def test_misc(self) -> None:
-        crc32c_hash = crc32c.CRC32CHash(b"")
+        crc32c_hash = crc32c.CRC32CHash()
 
         assert crc32c_hash.digest_size == 4
         assert crc32c_hash.name == "crc32c"
         assert len(crc32c_hash.digest()) == crc32c_hash.digest_size
         assert len(crc32c_hash.hexdigest()) == crc32c_hash.digest_size * 2
 
+    def test_initial_value(self) -> None:
+        crc32c_hash = crc32c.CRC32CHash()
+        crc32c_hash.update(b"hello world")
+        expected = crc32c_hash.digest()
+
+        crc32c_hash = crc32c.CRC32CHash(b"hello")
+        crc32c_hash.update(b" world")
+        assert expected == crc32c_hash.digest()
+
     def test_copy(self) -> None:
-        crc32c_hash = crc32c.CRC32CHash(b"")
+        crc32c_hash = crc32c.CRC32CHash()
         crc32c_hash_copy = crc32c_hash.copy()
 
         assert crc32c_hash.digest() == crc32c_hash_copy.digest()
@@ -172,7 +181,7 @@ class TestCRC32CHash:
             assert len(crc32c_hash.hexdigest()) == 8
 
         def test_piece_by_piece(self, data: bytes, crc: int) -> None:
-            crc32c_hash = crc32c.CRC32CHash(b"")
+            crc32c_hash = crc32c.CRC32CHash()
             for x in as_individual_bytes(data):
                 crc32c_hash.update(x)
             self._check_values(crc32c_hash, crc)
