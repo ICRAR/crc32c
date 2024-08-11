@@ -68,6 +68,9 @@ of the standard library:
    crc32c_hash.update(b' world')
    print(crc32c_hash.digest())
    # b'\xc9\x94e\xaa'
+   digest_as_int = int.from_bytes(crc32c_hash.digest(), "big")
+   print(digest_as_int == crc32c.crc32c(b'hello world'))
+   # True
 
 For more details see
 the documentation on `hash objects <https://docs.python.org/3/library/hashlib.html#hash-objects>`_.
