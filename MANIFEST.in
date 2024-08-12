@@ -1,5 +1,2 @@
 include LICENSE*
 include AUTHORS*
-include src/crc32c/ext/*.h
-include src/crc32c/*.pyi
-include src/crc32c/py.typed

@@ -13,6 +13,8 @@
   a checksum calculation is attempted.
 * Skip hardware probing if the `CRC32C_SKIP_HW_PROBE` environment variable
   is set to `1`.
+* Cleaned up wheel generation so it doesn't include
+  C extension sources after changes introduced in 2.5.
 
 ## [2.6]
 
