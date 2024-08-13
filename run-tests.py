@@ -23,6 +23,7 @@ def run_tests(crc32c_sw_mode):
 def main():
     run_tests("auto")
     run_tests("force")
+    run_tests("none")
 
 
 if __name__ == "__main__":
