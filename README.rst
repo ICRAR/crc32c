@@ -59,13 +59,15 @@ It can be set to the following values:
 On top of the ``crc32c`` function,
 a ``CRC32CHash(data=b"", gil_release_mode=-1)`` class is also offered.
 It is modelled after the "hash objects" of the ``hashlib`` module
-of the standard library:
+of the standard library. It also offers a ``checksum`` property:
 
 .. code-block:: python
 
    crc32c_hash = crc32c.CRC32CHash()
    crc32c_hash.update(b'hello')
    crc32c_hash.update(b' world')
+   print(crc32c_hash.checksum == crc32c.crc32c(b'hello world'))
+   # True
    print(crc32c_hash.digest())
    # b'\xc9\x94e\xaa'
    digest_as_int = int.from_bytes(crc32c_hash.digest(), "big")

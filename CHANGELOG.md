@@ -4,6 +4,7 @@
 
 * Added a `gil_relese_mode` parameter to the `CRC32CHash` constructor
   used by all underlying `crc32c` function calls (#51).
+* Added `CRC32CHash.checksum` auxiliary property.
 
 ## [2.6]
 

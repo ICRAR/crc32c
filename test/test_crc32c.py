@@ -174,6 +174,7 @@ class TestCRC32CHash:
     class TestSpecificValues:
         @staticmethod
         def _check_values(crc32c_hash: crc32c.CRC32CHash, crc: int) -> None:
+            assert crc32c_hash.checksum == crc
             assert int.from_bytes(crc32c_hash.digest(), "big") == crc
             assert len(crc32c_hash.digest()) == 4
             assert int(crc32c_hash.hexdigest(), 16) == crc

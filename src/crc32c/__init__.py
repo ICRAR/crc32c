@@ -36,6 +36,13 @@ class CRC32CHash:
         """
         return "crc32c"
 
+    @property
+    def checksum(self) -> int:
+        """
+        The checksum calculated so far. Not part of the hashlib interface.
+        """
+        return self._checksum
+
     def __init__(self, data: Buffer = b"", gil_release_mode: int = -1) -> None:
         """
         Initialise the hash object with an optional bytes-like object.
