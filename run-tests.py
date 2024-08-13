@@ -12,6 +12,7 @@ def run(cmd):
 
 def run_tests(crc32c_sw_mode):
     os.environ["CRC32C_SW_MODE"] = crc32c_sw_mode
+    os.environ["CRC32C_SKIP_HW_PROBE"] = ["0", "1"][crc32c_sw_mode == "none"]
     message = "# Tests for CRC32C_SW_MODE: %s #" % crc32c_sw_mode
     hashes = '#' * len(message)
     print("\n" + hashes)
