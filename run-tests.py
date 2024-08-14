@@ -17,23 +17,7 @@ def run_tests(crc32c_sw_mode):
     print("\n" + hashes)
     print(message)
     print(hashes + "\n")
-    run(
-        [
-            sys.executable,
-            "-c",
-            ("import crc32c;"
-             "print('Is big endian? ', crc32c.big_endian);"
-             "print('Is hardware based? ', crc32c.hardware_based);")
-        ]
-    )
     run([sys.executable, "-m", "pytest", "-v", os.path.join(SCRIPT_DIR, "test")])
-    run(
-        [
-            sys.executable,
-            "-c",
-            "import crc32c; import time; x = b' ' * int(1e8); n = 10; s = time.time(); [crc32c.crc32c(x) for _ in range(n)]; print('Ran at %.3f [GB/s]' % (n/10/(time.time() - s),))",
-        ]
-    )
 
 
 def main():
