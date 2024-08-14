@@ -171,7 +171,7 @@ class TestCRC32CHash:
 
     @pytest.mark.parametrize(
         "data,crc",
-        [(value.data, value.crc) for value in test_values],
+        [pytest.param(value.data, value.crc, id=value.name) for value in test_values],
     )
     class TestSpecificValues:
         @staticmethod
@@ -193,41 +193,33 @@ class TestCRC32CHash:
 
 
 @pytest.mark.calculates_crc32c
-class Crc32cChecks:
-    checksum: int
-    val: bytes
+@pytest.mark.parametrize(
+    "data,checksum",
+    [pytest.param(value.data, value.crc, id=value.name) for value in test_values],
+)
+class TestCRC32CValues:
 
-    def test_all(self) -> None:
-        assert self.checksum == crc32c.crc32c(self.val)
+    def test_all(self, data: bytes, checksum: int) -> None:
+        assert checksum == crc32c.crc32c(data)
 
-    def test_piece_by_piece(self) -> None:
+    def test_piece_by_piece(self, data: bytes, checksum: int) -> None:
         c = 0
-        for x in as_individual_bytes(self.val):
+        for x in as_individual_bytes(data):
             c = crc32c.crc32c(x, c)
-        assert self.checksum == c
+        assert checksum == c
 
-    def test_by_different_chunk_lenghts(self) -> None:
+    def test_by_different_chunk_lenghts(self, data: bytes, checksum: int) -> None:
         for chunk_size in range(1, 33):
             c = 0
-            for chunk in batched(self.val, chunk_size):
+            for chunk in batched(data, chunk_size):
                 c = crc32c.crc32c(bytes(chunk), c)
-            assert self.checksum == c
+            assert checksum == c
 
-    def test_by_different_memory_offsets(self) -> None:
+    def test_by_different_memory_offsets(self, data: bytes, checksum: int) -> None:
         for offset in range(16):
-            val = memoryview(self.val)
-            c = crc32c.crc32c(val[0:offset])
-            c = crc32c.crc32c(val[offset:], c)
-            assert self.checksum == c, (
+            view = memoryview(data)
+            c = crc32c.crc32c(view[0:offset])
+            c = crc32c.crc32c(view[offset:], c)
+            assert checksum == c, (
                 "Invalid checksum when splitting at offset %d" % offset
             )
-
-
-# Generate the actual test classes for each of the testing values
-for value in test_values:
-    classname = "Test%s" % value.name
-    locals()[classname] = type(
-        classname,
-        (Crc32cChecks,),
-        {"val": value.data, "checksum": value.crc},
-    )
