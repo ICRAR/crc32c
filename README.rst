@@ -97,8 +97,12 @@ to one of the following values:
 
 * ``auto``: same as if unset, will eventually be discontinued.
 * ``force``: use software implementation regardless of hardware support.
-* ``none``: fail to import the module with an ``ImportError``
-  if no hardware support is found (old 1.x default behavior).
+* ``none``: issue a ``RuntimeWarning`` when importing the module,
+  and a ``RuntimeError`` when executing the ``crc32c`` function,
+  if no hardware support is found.
+  In versions of this package up to 2.6
+  an ``ImportError`` was raised when importing the module instead.
+  In 1.x versions this was the default behaviour.
 
 Setting the ``CRC32C_SKIP_HW_PROBE`` to ``1``
 simulates platforms without hardware support.
