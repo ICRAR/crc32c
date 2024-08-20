@@ -25,4 +25,4 @@ jobs:
       - name: Run mypy
         run: mypy --strict src test
       - name: Run black
-        run: black --check src/ test/
+        run: black --check .

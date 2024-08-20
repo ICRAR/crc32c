@@ -23,13 +23,14 @@ import glob
 
 from setuptools import setup, Extension
 
-
-crcmod_ext = Extension('crc32c._crc32c',
-                       define_macros=[('NDEBUG', None)],
-                       depends=glob.glob('src/crc32c/ext/*.h'),
-                       language='c',
-                       sources=glob.glob('src/crc32c/ext/*.c'),
-                       include_dirs=['src/cc32c/ext/'])
+crcmod_ext = Extension(
+    "crc32c._crc32c",
+    define_macros=[("NDEBUG", None)],
+    depends=glob.glob("src/crc32c/ext/*.h"),
+    language="c",
+    sources=glob.glob("src/crc32c/ext/*.c"),
+    include_dirs=["src/cc32c/ext/"],
+)
 
 classifiers = [
     # There's no more specific classifier for LGPLv2.1+
@@ -45,23 +46,26 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 
-with open('README.rst', 'rt') as f:
+with open("README.rst", "rt") as f:
     long_description = f.read()
 
-setup(name='crc32c',
-      author='The ICRAR DIA Team',
-      url='https://github.com/ICRAR/crc32c',
-      author_email='rtobar@icrar.org',
-      version='2.6',
-      license="LGPL-2.1-or-later",
-      description=('A python package implementing the crc32c algorithm'
-      ' in hardware and software'),
-      long_description=long_description,
-      long_description_content_type='text/x-rst',
-      classifiers=classifiers,
-      packages=['crc32c'],
-      package_dir={'': 'src'},
-      package_data={"crc32c": ["*.pyi", "py.typed"]},
-      python_requires=">=3.7",
-      ext_modules=[crcmod_ext],
-      test_suite="test")
+setup(
+    name="crc32c",
+    author="The ICRAR DIA Team",
+    url="https://github.com/ICRAR/crc32c",
+    author_email="rtobar@icrar.org",
+    version="2.6",
+    license="LGPL-2.1-or-later",
+    description=(
+        "A python package implementing the crc32c algorithm" " in hardware and software"
+    ),
+    long_description=long_description,
+    long_description_content_type="text/x-rst",
+    classifiers=classifiers,
+    packages=["crc32c"],
+    package_dir={"": "src"},
+    package_data={"crc32c": ["*.pyi", "py.typed"]},
+    python_requires=">=3.7",
+    ext_modules=[crcmod_ext],
+    test_suite="test",
+)
