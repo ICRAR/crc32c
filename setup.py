@@ -21,7 +21,7 @@
 #
 import glob
 
-from setuptools import setup, Extension
+from setuptools import Extension, setup
 
 crcmod_ext = Extension(
     "crc32c._crc32c",

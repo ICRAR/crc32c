@@ -25,7 +25,7 @@ from __future__ import annotations
 import os
 import struct
 import warnings
-from typing import Any, Generator, NamedTuple, List
+from typing import Any, Generator, List, NamedTuple
 
 import pytest
 
