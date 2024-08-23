@@ -34,11 +34,19 @@
 
 #define MIN_BUFSIZE_FOR_AUTOMATIC_RELEASE 32 * 1024  /* threshold for GIL release is 32KiB */
 
-/* Set at module loading time */
-static crc_function crc_fn;
+/* Used in other files so needs global visibility */
 int is_big_endian;
 
-static inline int crc32c_inline(uint32_t crc, unsigned char *bin_data, Py_ssize_t len) {
+typedef struct _CRC32CState {
+	crc_function crc_fn;
+} CRC32CState;
+
+CRC32CState *get_state(PyObject *module)
+{
+	return (CRC32CState *)PyModule_GetState(module);
+}
+
+static inline int crc32c_inline(crc_function crc_fn, uint32_t crc, unsigned char *bin_data, Py_ssize_t len) {
 	int result;
 	crc ^= 0xffffffff;
 	result = crc_fn(crc, bin_data, len);
@@ -47,7 +55,7 @@ static inline int crc32c_inline(uint32_t crc, unsigned char *bin_data, Py_ssize_
 }
 
 static
-PyObject* crc32c_crc32c(PyObject *self, PyObject *args, PyObject *kwargs) {
+PyObject* crc32c_crc32c(PyObject *module, PyObject *args, PyObject *kwargs) {
 	Py_buffer pbin;
 	unsigned char *bin_data = NULL;
 	uint32_t crc = 0U, result;
@@ -58,6 +66,7 @@ PyObject* crc32c_crc32c(PyObject *self, PyObject *args, PyObject *kwargs) {
 	/* In python 3 we accept only bytes-like objects */
 	const char *format ="y*|Ii:crc32";
 
+	crc_function crc_fn = get_state(module)->crc_fn;
 	if (!crc_fn) {
 		PyErr_SetString(
 		    PyExc_RuntimeError,
@@ -72,10 +81,10 @@ PyObject* crc32c_crc32c(PyObject *self, PyObject *args, PyObject *kwargs) {
 	bin_data = pbin.buf;
 	if ((gil_release_mode < 0 && pbin.len >= MIN_BUFSIZE_FOR_AUTOMATIC_RELEASE) || gil_release_mode >= 1) {
 		Py_BEGIN_ALLOW_THREADS
-		result = crc32c_inline(crc, bin_data, pbin.len);
+		result = crc32c_inline(crc_fn, crc, bin_data, pbin.len);
 		Py_END_ALLOW_THREADS
 	} else {
-		result = crc32c_inline(crc, bin_data, pbin.len);
+		result = crc32c_inline(crc_fn, crc, bin_data, pbin.len);
 	}
 
 	PyBuffer_Release(&pbin);
@@ -151,7 +160,7 @@ static struct PyModuleDef crc32c_def = {
 	PyModuleDef_HEAD_INIT,                             /* m_base */
 	"_crc32c",                                         /* m_name */
 	"crc32c implementation in hardware and software",  /* m_doc */
-	-1,                                                /* m_size */
+	sizeof(CRC32CState),                               /* m_size */
 	CRC32CMethods,                                     /* m_methods */
 };
 
@@ -169,7 +178,7 @@ PyMODINIT_FUNC PyInit__crc32c(void)
 #ifdef CRC32C_CAN_PROBE_HW
 	skip_hw_probe = get_skip_hw_probe();
 #endif
-	crc_fn = NULL;
+	crc_function crc_fn = NULL;
 	if (sw_mode == FORCE) {
 		crc_fn = _crc32c_sw_slicing_by_8;
 		hardware_based = Py_False;
@@ -206,6 +215,7 @@ PyMODINIT_FUNC PyInit__crc32c(void)
 		return NULL;
 	}
 	Py_INCREF(hardware_based);
+	get_state(m)->crc_fn = crc_fn;
 	if (PyModule_AddObject(m, "hardware_based", hardware_based) < 0) {
 		return NULL;
 	}
