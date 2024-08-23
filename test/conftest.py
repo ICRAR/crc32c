@@ -51,18 +51,3 @@ def skip_if_crc32c_unavailable(
 def pytest_sessionstart(session: pytest.Session) -> None:
     print("crc32c is big endian? ", crc32c.big_endian)
     print("crc32c is hardware based? ", crc32c.hardware_based)
-
-    if not _crc32c_is_available():
-        print("crc32c can't run, no performance diagnostic issued")
-        return
-
-    # We run 1GB in total
-    data = b" " * int(1e8)
-    n = 10
-
-    start = time.monotonic()
-    [crc32c.crc32c(data) for _ in range(n)]
-    end = time.monotonic()
-    speed_gbs = 1 / (end - start)
-
-    print(f"crc32c running at {speed_gbs:.3f} [GB/s]")
