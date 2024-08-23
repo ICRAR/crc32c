@@ -147,7 +147,13 @@ static const char *no_hw_or_sw_error_msg = "\n\n"
 " * 'force': use software implementation regardless of hardware support.\n"
 " * 'none': fail if no hardware support is found.\n";
 
-static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT, "_crc32c", "crc32c implementation in hardware and software", -1, CRC32CMethods};
+static struct PyModuleDef moduledef = {
+	PyModuleDef_HEAD_INIT,
+	"_crc32c",
+	"crc32c implementation in hardware and software",
+	-1,
+	CRC32CMethods
+};
 
 PyMODINIT_FUNC PyInit__crc32c(void)
 {
