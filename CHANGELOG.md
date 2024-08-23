@@ -8,6 +8,7 @@
   declaring that our C extension doesn't need the GIL.
   In free-threaded builds the `gil_release_mode` parameter doesn't have any effect.
 * Added `CRC32CHash.checksum` auxiliary property.
+* Added new ``crc32c.benchmark`` utility for simple benchmarking.
 * The ``crc32c`` module doesn't fail to import when ``CRC32C_SW_MODE`` is ``none``
   and no hardware acceleration is found,
   making the act of importing the module less ackward.

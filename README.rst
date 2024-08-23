@@ -87,6 +87,10 @@ the following module-level values:
    is software- or hardware-based.
  * ``big_endian`` indicates whether the platform is big endian or not.
 
+A benchmarking utility can be found
+when executing the ``crc32c.benchmark`` module.
+Consult its help with the ``-h`` flag for options.
+
 Implementation details
 ----------------------
 
