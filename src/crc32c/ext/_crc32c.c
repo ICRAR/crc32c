@@ -79,11 +79,16 @@ PyObject* crc32c_crc32c(PyObject *module, PyObject *args, PyObject *kwargs) {
 		return NULL;
 
 	bin_data = pbin.buf;
-	if ((gil_release_mode < 0 && pbin.len >= MIN_BUFSIZE_FOR_AUTOMATIC_RELEASE) || gil_release_mode >= 1) {
+#ifndef Py_GIL_DISABLED
+	if ((gil_release_mode < 0 && pbin.len >= MIN_BUFSIZE_FOR_AUTOMATIC_RELEASE) || gil_release_mode >= 1)
+	{
 		Py_BEGIN_ALLOW_THREADS
 		result = crc32c_inline(crc_fn, crc, bin_data, pbin.len);
 		Py_END_ALLOW_THREADS
-	} else {
+	}
+	else
+#endif
+	{
 		result = crc32c_inline(crc_fn, crc, bin_data, pbin.len);
 	}
 
@@ -149,6 +154,9 @@ static int crc32c_mod_exec(PyObject *module);
 
 static PyModuleDef_Slot CRC32CSlots[] = {
 	{Py_mod_exec, crc32c_mod_exec},
+#ifdef Py_GIL_DISABLED
+	{Py_mod_gil, Py_MOD_GIL_NOT_USED},
+#endif
 	{0, NULL}
 };
 

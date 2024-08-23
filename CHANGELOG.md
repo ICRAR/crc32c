@@ -4,6 +4,9 @@
 
 * Added a `gil_relese_mode` parameter to the `CRC32CHash` constructor
   used by all underlying `crc32c` function calls (#51).
+* Added support for free-threaded Python builds,
+  declaring that our C extension doesn't need the GIL.
+  In free-threaded builds the `gil_release_mode` parameter doesn't have any effect.
 * Added `CRC32CHash.checksum` auxiliary property.
 * The ``crc32c`` module doesn't fail to import when ``CRC32C_SW_MODE`` is ``none``
   and no hardware acceleration is found,

@@ -56,6 +56,9 @@ It can be set to the following values:
 * 0: Never release the GIL
 * Positive: Always release the GIL
 
+The ``gil_release_mode`` parameter
+doesn't have any effect on free-threaded Python builds.
+
 On top of the ``crc32c`` function,
 a ``CRC32CHash(data=b"", gil_release_mode=-1)`` class is also offered.
 It is modelled after the "hash objects" of the ``hashlib`` module
