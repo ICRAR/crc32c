@@ -147,12 +147,12 @@ static const char *no_hw_or_sw_error_msg = "\n\n"
 " * 'force': use software implementation regardless of hardware support.\n"
 " * 'none': fail if no hardware support is found.\n";
 
-static struct PyModuleDef moduledef = {
-	PyModuleDef_HEAD_INIT,
-	"_crc32c",
-	"crc32c implementation in hardware and software",
-	-1,
-	CRC32CMethods
+static struct PyModuleDef crc32c_def = {
+	PyModuleDef_HEAD_INIT,                             /* m_base */
+	"_crc32c",                                         /* m_name */
+	"crc32c implementation in hardware and software",  /* m_doc */
+	-1,                                                /* m_size */
+	CRC32CMethods,                                     /* m_methods */
 };
 
 PyMODINIT_FUNC PyInit__crc32c(void)
@@ -201,7 +201,7 @@ PyMODINIT_FUNC PyInit__crc32c(void)
 
 	is_big_endian = (*(const char *)(&n) == 0);
 
-	m = PyModule_Create(&moduledef);
+	m = PyModule_Create(&crc32c_def);
 	if (m == NULL) {
 		return NULL;
 	}
