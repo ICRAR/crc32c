@@ -145,6 +145,13 @@ static PyMethodDef CRC32CMethods[] = {
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
+static int crc32c_mod_exec(PyObject *module);
+
+static PyModuleDef_Slot CRC32CSlots[] = {
+	{Py_mod_exec, crc32c_mod_exec},
+	{0, NULL}
+};
+
 static const char *no_hw_or_sw_error_msg = "\n\n"
 "Hardware extensions providing a crc32c hardware instruction are not available in\n"
 "your processor. This package comes with a software implementation, but this\n"
@@ -162,11 +169,18 @@ static struct PyModuleDef crc32c_def = {
 	"crc32c implementation in hardware and software",  /* m_doc */
 	sizeof(CRC32CState),                               /* m_size */
 	CRC32CMethods,                                     /* m_methods */
+	CRC32CSlots,                                       /* m_slots */
+	NULL,                                              /* m_traverse */
+	NULL,                                              /* m_clear */
+	NULL,                                              /* m_free */
 };
 
 PyMODINIT_FUNC PyInit__crc32c(void)
 {
-	PyObject *module;
+	return PyModuleDef_Init(&crc32c_def);
+}
+
+static int crc32c_mod_exec(PyObject *module) {
 	PyObject *hardware_based;
 	enum crc32c_sw_mode sw_mode;
 	const uint32_t n = 1;
@@ -203,24 +217,20 @@ PyMODINIT_FUNC PyInit__crc32c(void)
 		if (PyErr_WarnEx(PyExc_RuntimeWarning,
 		                 no_hw_or_sw_error_msg,
 		                 1) == -1) {
-			return NULL;
+			return -1;
 		}
 		hardware_based = Py_False;
 	}
 
 	is_big_endian = (*(const char *)(&n) == 0);
 
-	module = PyModule_Create(&crc32c_def);
-	if (module == NULL) {
-		return NULL;
-	}
 	Py_INCREF(hardware_based);
 	get_state(module)->crc_fn = crc_fn;
 	if (PyModule_AddObject(module, "hardware_based", hardware_based) < 0) {
-		return NULL;
+		return -1;
 	}
 	if (PyModule_AddIntConstant(module, "big_endian", is_big_endian) < 0) {
-		return NULL;
+		return -1;
 	}
-	return module;
+	return 0;
 }

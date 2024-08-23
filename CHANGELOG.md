@@ -11,6 +11,9 @@
   Now a ``RuntimeWarning`` is issued at import time instead,
   and a``RuntimeError`` is raised any time
   a checksum calculation is attempted.
+* Improved support in the C extension for Python sub-interpreters
+  by keeping all global state on a per-module basis,
+  and performing multi-phase initialisation as per PEP-489.
 * Skip hardware probing if the `CRC32C_SKIP_HW_PROBE` environment variable
   is set to `1`.
 * Cleaned up wheel generation so it doesn't include
