@@ -1,0 +1,31 @@
+name: Run benchmarking tool
+
+# Build on every branch push, tag push, and pull request change:
+on:
+  push:
+  pull_request:
+
+jobs:
+  run_benchmark:
+    name: Benchmark os=${{ matrix.os }}/sw_mode=${{ matrix.sw_mode}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-2019, macos-12]
+        sw_mode: [force, auto]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        name: Install Python
+        with:
+          python-version: '3.7'
+
+      - name: Install crc32c
+        run: python setup.py develop
+
+      - name: Benchmark with 1 [GB] 10 times
+        env:
+          CRC32C_SW_MODE: ${{ matrix.sw_mode }}
+        run: python -m crc32c.benchmark -i 10 -s 1073741824
