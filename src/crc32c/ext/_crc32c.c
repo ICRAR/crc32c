@@ -166,7 +166,7 @@ static struct PyModuleDef crc32c_def = {
 
 PyMODINIT_FUNC PyInit__crc32c(void)
 {
-	PyObject *m;
+	PyObject *module;
 	PyObject *hardware_based;
 	enum crc32c_sw_mode sw_mode;
 	const uint32_t n = 1;
@@ -210,17 +210,17 @@ PyMODINIT_FUNC PyInit__crc32c(void)
 
 	is_big_endian = (*(const char *)(&n) == 0);
 
-	m = PyModule_Create(&crc32c_def);
-	if (m == NULL) {
+	module = PyModule_Create(&crc32c_def);
+	if (module == NULL) {
 		return NULL;
 	}
 	Py_INCREF(hardware_based);
-	get_state(m)->crc_fn = crc_fn;
-	if (PyModule_AddObject(m, "hardware_based", hardware_based) < 0) {
+	get_state(module)->crc_fn = crc_fn;
+	if (PyModule_AddObject(module, "hardware_based", hardware_based) < 0) {
 		return NULL;
 	}
-	if (PyModule_AddIntConstant(m, "big_endian", is_big_endian) < 0) {
+	if (PyModule_AddIntConstant(module, "big_endian", is_big_endian) < 0) {
 		return NULL;
 	}
-	return m;
+	return module;
 }
