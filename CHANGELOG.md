@@ -2,6 +2,8 @@
 
 ## Development
 
+## [2.7]
+
 * Added a `gil_relese_mode` parameter to the `CRC32CHash` constructor
   used by all underlying `crc32c` function calls (#51).
 * Added support for free-threaded Python builds,
@@ -201,3 +203,4 @@
 [2.4.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.4.1
 [2.5]: https://github.com/ICRAR/crc32c/releases/tag/v2.5
 [2.6]: https://github.com/ICRAR/crc32c/releases/tag/v2.6
+[2.7]: https://github.com/ICRAR/crc32c/releases/tag/v2.7

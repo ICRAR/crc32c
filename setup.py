@@ -54,7 +54,7 @@ setup(
     author="The ICRAR DIA Team",
     url="https://github.com/ICRAR/crc32c",
     author_email="rtobar@icrar.org",
-    version="2.6",
+    version="2.7",
     license="LGPL-2.1-or-later",
     description=(
         "A python package implementing the crc32c algorithm" " in hardware and software"
