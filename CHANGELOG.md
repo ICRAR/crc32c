@@ -2,6 +2,8 @@
 
 ## Development
 
+## [2.7.post0]
+
 * Fixed generation of source distribution (#58).
 
 ## [2.7]
@@ -206,3 +208,4 @@
 [2.5]: https://github.com/ICRAR/crc32c/releases/tag/v2.5
 [2.6]: https://github.com/ICRAR/crc32c/releases/tag/v2.6
 [2.7]: https://github.com/ICRAR/crc32c/releases/tag/v2.7
+[2.7.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.post0
