@@ -64,7 +64,7 @@ setup(
     classifiers=classifiers,
     packages=["crc32c"],
     package_dir={"": "src"},
-    package_data={"crc32c": ["*.pyi", "py.typed"]},
+    package_data={"crc32c": ["*.pyi", "py.typed", "ext/*.h"]},
     python_requires=">=3.7",
     ext_modules=[crcmod_ext],
     test_suite="test",

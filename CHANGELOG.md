@@ -2,6 +2,8 @@
 
 ## Development
 
+* Fixed generation of source distribution (#58).
+
 ## [2.7]
 
 * Added a `gil_relese_mode` parameter to the `CRC32CHash` constructor
