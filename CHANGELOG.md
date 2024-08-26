@@ -2,6 +2,8 @@
 
 ## Development
 
+## [2.7.post1]
+
 * Added missing test files to source distribution (#59).
 
 ## [2.7.post0]
@@ -211,3 +213,4 @@
 [2.6]: https://github.com/ICRAR/crc32c/releases/tag/v2.6
 [2.7]: https://github.com/ICRAR/crc32c/releases/tag/v2.7
 [2.7.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.post0
+[2.7.post1]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.post1
