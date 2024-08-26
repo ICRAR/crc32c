@@ -154,6 +154,9 @@ static int crc32c_mod_exec(PyObject *module);
 
 static PyModuleDef_Slot CRC32CSlots[] = {
 	{Py_mod_exec, crc32c_mod_exec},
+#if PY_VERSION_HEX >= 0x030C0000
+	{Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+#endif
 #ifdef Py_GIL_DISABLED
 	{Py_mod_gil, Py_MOD_GIL_NOT_USED},
 #endif

@@ -2,6 +2,9 @@
 
 ## Development
 
+* Actually advertise that our C extension supports
+  sub-interpreters, and per-GIL ones for that matter.
+
 ## [2.7.post1]
 
 * Added missing test files to source distribution (#59).
