@@ -2,6 +2,8 @@
 
 ## Development
 
+* Added missing test files to source distribution (#59).
+
 ## [2.7.post0]
 
 * Fixed generation of source distribution (#58).
