@@ -27,4 +27,4 @@ jobs:
       - name: Run black
         run: black --check .
       - name: Run isort
-        run: isort --check --diff .
+        run: isort --profile black --check --diff .
