@@ -2,6 +2,8 @@
 
 ## Development
 
+## [2.7.1]
+
 * Actually advertise that our C extension supports
   sub-interpreters, and per-GIL ones for that matter.
 
@@ -217,3 +219,4 @@
 [2.7]: https://github.com/ICRAR/crc32c/releases/tag/v2.7
 [2.7.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.post0
 [2.7.post1]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.post1
+[2.7.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.1
