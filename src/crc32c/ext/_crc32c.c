@@ -175,15 +175,15 @@ static const char *no_hw_or_sw_error_msg = "\n\n"
 " * 'none': fail if no hardware support is found.\n";
 
 static struct PyModuleDef crc32c_def = {
-	PyModuleDef_HEAD_INIT,                             /* m_base */
-	"_crc32c",                                         /* m_name */
-	"crc32c implementation in hardware and software",  /* m_doc */
-	sizeof(CRC32CState),                               /* m_size */
-	CRC32CMethods,                                     /* m_methods */
-	CRC32CSlots,                                       /* m_slots */
-	NULL,                                              /* m_traverse */
-	NULL,                                              /* m_clear */
-	NULL,                                              /* m_free */
+	.m_base = PyModuleDef_HEAD_INIT,
+	.m_name = "_crc32c",
+	.m_doc = "crc32c implementation in hardware and software",
+	.m_size = sizeof(CRC32CState),
+	.m_methods = CRC32CMethods,
+	.m_slots = CRC32CSlots,
+	.m_traverse = NULL,
+	.m_clear = NULL,
+	.m_free = NULL,
 };
 
 PyMODINIT_FUNC PyInit__crc32c(void)
