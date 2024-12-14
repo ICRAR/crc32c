@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         name: Install Python
         with:
-          python-version: '3.7'
+          python-version: '3.13'
 
       - name: Install crc32c
         run: python setup.py develop
