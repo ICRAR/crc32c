@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crc32c"
+version = "2.7.1"
+authors = [
+    { name = "Rodrigo Tobar", email = "rtobar@icrar.org" },
+]
+description = "A python package implementing the crc32c algorithm in hardware and software"
+readme = "README.rst"
+license = { text = "LGPL-2.1-or-later" }
+requires-python = ">=3.7"
+classifiers = [
+    # There's no more specific classifier for LGPLv2.1+
+    "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+    "Operating System :: OS Independent",
+    "Programming Language :: C",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+urls.github = "https://github.com/ICRAR/crc32c"
+urls.changelog = "https://github.com/ICRAR/crc32c/blob/master/CHANGELOG.md"
+urls.issues = "https://github.com/ICRAR/crc32c/issues"
+
+
+[tool.pytest.ini_options]
+markers = [
+    "calculates_crc32c: Mark a test as needing crc32c working"
+]

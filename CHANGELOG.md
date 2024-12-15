@@ -2,6 +2,11 @@
 
 ## Development
 
+* Use `pyproject.toml` to declare project metadata and configuration.
+  This includes its build system (setuptools),
+  moving most static content from `setup.py` to `pyproject.toml`,
+  and moving the `pytest` configuration out from `pytest.ini` too.
+
 ## [2.7.1]
 
 * Actually advertise that our C extension supports
