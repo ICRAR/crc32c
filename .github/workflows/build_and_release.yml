@@ -52,8 +52,11 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: Install build
+        run: pip install build
+
       - name: Build sdist
-        run: python setup.py sdist
+        run: python -m build -s
 
       - uses: actions/upload-artifact@v4
         with:

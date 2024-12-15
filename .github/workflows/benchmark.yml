@@ -22,6 +22,9 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: Install setuptools
+        run: pip install setuptools
+
       - name: Install crc32c
         run: python setup.py develop
 
