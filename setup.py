@@ -66,5 +66,4 @@ setup(
     package_data={"crc32c": ["*.pyi", "py.typed", "ext/*.h"]},
     python_requires=">=3.7",
     ext_modules=[crcmod_ext],
-    test_suite="test",
 )
