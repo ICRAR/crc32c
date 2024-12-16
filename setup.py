@@ -32,8 +32,6 @@ crcmod_ext = Extension(
 )
 
 setup(
-    packages=["crc32c"],
-    package_dir={"": "src"},
     package_data={"crc32c": ["*.pyi", "py.typed", "ext/*.h"]},
     ext_modules=[crcmod_ext],
 )
