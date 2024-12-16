@@ -22,13 +22,10 @@ jobs:
         with:
           python-version: '3.13'
 
-      - name: Install setuptools
-        run: pip install setuptools
-
-      - name: Install crc32c
-        run: python setup.py develop
+      - name: Install tox-uv
+        run: pip install tox-uv
 
       - name: Benchmark with 1 [GB] 10 times
         env:
           CRC32C_SW_MODE: ${{ matrix.sw_mode }}
-        run: python -m crc32c.benchmark -i 10 -s 1073741824
+        run: tox -e benchmark -- -i 10 -s 1073741824

@@ -18,15 +18,7 @@ jobs:
           architecture: x64
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install build
-        run: pip install build
-      - name: Install dev requirements
-        run: pip install -r requirements-dev.txt
-      - name: Build and install package
-        run: python -m build -w && pip install dist/crc32c*.whl
-      - name: Run mypy
-        run: mypy --strict src test
-      - name: Run black
-        run: black --check .
-      - name: Run isort
-        run: isort --profile black --check --diff .
+      - name: Install tox-uv
+        run: pip install tox-uv
+      - name: Run linting steps
+        run: tox -e lint

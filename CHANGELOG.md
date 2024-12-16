@@ -6,6 +6,8 @@
   This includes its build system (setuptools),
   moving most static content from `setup.py` to `pyproject.toml`,
   and moving the `pytest` configuration out from `pytest.ini` too.
+* Introduced `tox` as a job runner for development activities,
+  good to use with `tox-uv` for easy multi-python testing.
 
 ## [2.7.1]
 

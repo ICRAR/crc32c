@@ -1,6 +1,0 @@
-# Keep alphasorted
-black
-isort
-mypy
-pytest
-wheel

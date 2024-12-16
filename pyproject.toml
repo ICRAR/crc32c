@@ -29,8 +29,54 @@ urls.github = "https://github.com/ICRAR/crc32c"
 urls.changelog = "https://github.com/ICRAR/crc32c/blob/master/CHANGELOG.md"
 urls.issues = "https://github.com/ICRAR/crc32c/issues"
 
+[dependency-groups]
+test = [
+    "pytest",
+]
+lint = [
+    "black",
+    "isort",
+    "mypy",
+]
 
 [tool.pytest.ini_options]
 markers = [
     "calculates_crc32c: Mark a test as needing crc32c working"
 ]
+
+[tool.tox]
+requires = ["tox>=4.23"]
+env_list = [
+    "py3.8",
+    "py3.9",
+    "py3.10",
+    "py3.11",
+    "py3.12",
+    "py3.13",
+]
+
+[tool.tox.env_run_base]
+description = "Run test under {base_python}"
+labels = ["test"]
+commands = [["{env_python}", "-u", "run-tests.py"]]
+dependency_groups = ["test"]
+passenv = ["CRC32C_SW_MODE"]
+
+[tool.tox.env.benchmark]
+description = "Run basic benckmark"
+labels = ["benchmark"]
+commands = [["{env_python}", "-m", "crc32c.benchmark", { replace = "posargs", extend = true }]]
+passenv = ["CRC32C_SW_MODE"]
+parallel_show_output = true
+
+[tool.tox.env.lint]
+description = "Run linting checks"
+labels = ["lint"]
+commands = [
+    ["mypy", "--strict", "src", "test"],
+    ["black", "--check", "src", "test"],
+    ["isort", "--profile", "black", "--check", "--diff", "src", "test"],
+]
+dependency_groups = ["lint", "test"]
+package = "skip"
+changedir = "{toxinidir}"
