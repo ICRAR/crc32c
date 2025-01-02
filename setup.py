@@ -25,7 +25,6 @@ from setuptools import Extension, setup
 
 crcmod_ext = Extension(
     "crc32c._crc32c",
-    define_macros=[("NDEBUG", None)],
     depends=glob.glob("src/crc32c/ext/*.h"),
     language="c",
     sources=glob.glob("src/crc32c/ext/*.c"),
