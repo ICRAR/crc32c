@@ -17,7 +17,7 @@ jobs:
         os: [ubuntu-22.04, windows-2019, macos-14]
         arch: [auto]
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             arch: aarch64
 
     steps:
