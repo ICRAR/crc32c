@@ -2,12 +2,15 @@
 
 ## Development
 
+## [2.7.1.post0]
+
 * Use `pyproject.toml` to declare project metadata and configuration.
   This includes its build system (setuptools),
   moving most static content from `setup.py` to `pyproject.toml`,
   and moving the `pytest` configuration out from `pytest.ini` too.
 * Introduced `tox` as a job runner for development activities,
   good to use with `tox-uv` for easy multi-python testing.
+* Python 3.14 wheels re-generated.
 
 ## [2.7.1]
 
@@ -227,3 +230,4 @@
 [2.7.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.post0
 [2.7.post1]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.post1
 [2.7.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.1
+[2.7.1.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.1.post0

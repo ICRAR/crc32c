@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "crc32c"
-version = "2.7.1"
+version = "2.7.1.post0"
 authors = [
     { name = "Rodrigo Tobar", email = "rtobar@icrar.org" },
 ]
