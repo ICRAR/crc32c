@@ -30,6 +30,9 @@ urls.github = "https://github.com/ICRAR/crc32c"
 urls.changelog = "https://github.com/ICRAR/crc32c/blob/master/CHANGELOG.md"
 urls.issues = "https://github.com/ICRAR/crc32c/issues"
 
+[project.scripts]
+crc32c = "crc32c:main"
+
 [dependency-groups]
 test = [
     "pytest",

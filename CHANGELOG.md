@@ -2,6 +2,9 @@
 
 ## Development
 
+* Add ``crc32c.cli`` module (and related ``crc32c`` generated script)
+  as a command line utility to calculate the crc32c checksum on input files.
+
 ## [2.7.1.post0]
 
 * Use `pyproject.toml` to declare project metadata and configuration.

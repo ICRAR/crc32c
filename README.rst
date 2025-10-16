@@ -29,6 +29,9 @@ by older compiler versions.
 Usage
 -----
 
+API
+^^^
+
 The core function exposed by this module is ``crc32c(data, value=0, gil_release_mode=-1)``.
 It computes the CRC32C checksum of ``data``
 starting with an initial ``value`` checksum,
@@ -90,6 +93,14 @@ the following module-level values:
 A benchmarking utility can be found
 when executing the ``crc32c.benchmark`` module.
 Consult its help with the ``-h`` flag for options.
+
+CLI
+^^^
+
+A simple ``crc32c`` script is also installed alongside the package.
+It is also available when running the ``crc32c`` module (e.g., ``python -mcrc32c``).
+It takes one or more filenames, calculates their crc32c checksums, and prints them on stdout.
+See ``crc32c -h`` for all available options.
 
 Implementation details
 ----------------------
