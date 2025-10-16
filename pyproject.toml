@@ -24,6 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 urls.github = "https://github.com/ICRAR/crc32c"
 urls.changelog = "https://github.com/ICRAR/crc32c/blob/master/CHANGELOG.md"
@@ -55,6 +56,8 @@ env_list = [
     "py3.12",
     "py3.13",
     "py3.13t",
+    "py3.14",
+    "py3.14t",
 ]
 
 [tool.tox.env_run_base]
