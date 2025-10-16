@@ -47,12 +47,14 @@ markers = [
 [tool.tox]
 requires = ["tox>=4.23"]
 env_list = [
+    "py3.7",
     "py3.8",
     "py3.9",
     "py3.10",
     "py3.11",
     "py3.12",
     "py3.13",
+    "py3.13t",
 ]
 
 [tool.tox.env_run_base]
