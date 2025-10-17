@@ -2,6 +2,8 @@
 
 ## Development
 
+## [2.8]
+
 * Add ``crc32c.cli`` module (and related ``crc32c`` generated script)
   as a command line utility to calculate the crc32c checksum on input files.
 
@@ -234,3 +236,4 @@
 [2.7.post1]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.post1
 [2.7.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.1
 [2.7.1.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.1.post0
+[2.8]: https://github.com/ICRAR/crc32c/releases/tag/v2.8
