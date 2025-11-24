@@ -17,7 +17,7 @@ jobs:
           python-version: '3.14'
           architecture: x64
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Install tox-uv
         run: pip install tox-uv
       - name: Run linting steps
