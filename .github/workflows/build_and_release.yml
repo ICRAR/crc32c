@@ -27,7 +27,7 @@ jobs:
         if: ${{ matrix.arch == 'aarch64' }}
         name: Set up QEMU
       - name: Run cibuildwheel
-        uses: pypa/cibuildwheel@v3.4.0
+        uses: pypa/cibuildwheel@v3.4.1
         env:
           CIBW_ARCHS_LINUX: ${{matrix.arch}}
           CIBW_TEST_REQUIRES: pytest
@@ -35,7 +35,7 @@ jobs:
           CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
           CIBW_TEST_SKIP: '*macosx_arm64 *universal2:arm64'
           CIBW_BUILD_VERBOSITY: 1
-          CIBW_ENABLE: pypy cpython-freethreading
+          CIBW_ENABLE: pypy
       - uses: actions/upload-artifact@v7
         with:
           name: wheels-${{ matrix.os }}-${{ matrix.arch }}
