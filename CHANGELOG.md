@@ -2,6 +2,8 @@
 
 ## Development
 
+## [2.9]
+
 * Drop support for Python < 3.8.
 * Added ``crc32c.__version__`` attribute.
 
@@ -240,3 +242,4 @@
 [2.7.1]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.1
 [2.7.1.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.1.post0
 [2.8]: https://github.com/ICRAR/crc32c/releases/tag/v2.8
+[2.9]: https://github.com/ICRAR/crc32c/releases/tag/v2.9
