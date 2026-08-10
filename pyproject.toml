@@ -11,13 +11,12 @@ authors = [
 description = "A python package implementing the crc32c algorithm in hardware and software"
 readme = "README.rst"
 license = { text = "LGPL-2.1-or-later" }
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     # There's no more specific classifier for LGPLv2.1+
     "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
     "Operating System :: OS Independent",
     "Programming Language :: C",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -52,7 +51,6 @@ markers = [
 [tool.tox]
 requires = ["tox>=4.23"]
 env_list = [
-    "py3.7",
     "py3.8",
     "py3.9",
     "py3.10",

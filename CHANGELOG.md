@@ -2,6 +2,8 @@
 
 ## Development
 
+* Drop support for Python < 3.8.
+
 ## [2.8]
 
 * Add ``crc32c.cli`` module (and related ``crc32c`` generated script)
