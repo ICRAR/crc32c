@@ -3,6 +3,7 @@
 ## Development
 
 * Drop support for Python < 3.8.
+* Added ``crc32c.__version__`` attribute.
 
 ## [2.8]
 
