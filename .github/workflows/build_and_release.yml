@@ -19,6 +19,8 @@ jobs:
         include:
           - os: ubuntu-22.04
             arch: aarch64
+          - os: ubuntu-24.04-riscv
+            arch: riscv64
 
     steps:
       - uses: actions/checkout@v7
