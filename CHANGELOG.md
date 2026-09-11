@@ -2,6 +2,10 @@
 
 ## Development
 
+## [2.9.post0]
+
+* Build and publish RISCV wheels to PyPI thanks to the RISE project (#92).
+
 ## [2.9]
 
 * Drop support for Python < 3.8.
@@ -243,3 +247,4 @@
 [2.7.1.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.7.1.post0
 [2.8]: https://github.com/ICRAR/crc32c/releases/tag/v2.8
 [2.9]: https://github.com/ICRAR/crc32c/releases/tag/v2.9
+[2.9.post0]: https://github.com/ICRAR/crc32c/releases/tag/v2.9.post0
